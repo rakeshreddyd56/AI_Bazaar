@@ -1561,6 +1561,1549 @@ export const seedListings: Listing[] = [
     createdAt: isoDaysAgo(11),
     updatedAt: isoDaysAgo(1),
   },
+  {
+    id: "openai-gpt-5-mini-openrouter",
+    slug: "openai-gpt-5-mini-openrouter",
+    name: "OpenAI GPT-5 Mini (OpenRouter)",
+    summary: {
+      "en-IN":
+        "High-context multimodal model routed via OpenRouter with cost-efficient pricing for builder workloads.",
+      "hi-IN":
+        "builder workflows के लिए cost-efficient pricing वाला high-context multimodal मॉडल (OpenRouter)।",
+    },
+    modality: ["text", "code", "image"],
+    tags: ["openrouter", "gpt-5-mini", "multimodal", "reasoning"],
+    capabilities: {
+      contextTokens: 400000,
+      supportsImageInput: true,
+      supportsFileInput: true,
+      toolCalling: true,
+    },
+    limitations: [
+      "Final commercial and safety requirements depend on provider policy and deployment setup.",
+      "High-context prompts require strict prompt budgeting for cost control.",
+    ],
+    benchmarks: {
+      contextWindowTokens: 400000,
+      inputCostPerMUsd: 0.25,
+      outputCostPerMUsd: 2.0,
+      inputModalitiesCount: 3,
+    },
+    pricingUsd: {
+      inputPerM: 0.25,
+      outputPerM: 2.0,
+    },
+    quickstart: [
+      {
+        "en-IN": "Use OpenRouter chat completion endpoint and set strict max output tokens.",
+        "hi-IN": "OpenRouter chat completion endpoint उपयोग करें और strict max output tokens सेट करें।",
+      },
+      {
+        "en-IN": "Route simple tasks to mini tier and reserve larger models for hard reasoning.",
+        "hi-IN": "simple tasks को mini tier पर route करें और कठिन reasoning के लिए बड़े models रखें।",
+      },
+    ],
+    bestFor: [
+      {
+        "en-IN": "General coding assistants, high-context workflows, and multimodal RAG.",
+        "hi-IN": "general coding assistants, high-context workflows और multimodal RAG।",
+      },
+    ],
+    avoidWhen: [
+      {
+        "en-IN": "Fully offline inference requirements.",
+        "hi-IN": "fully offline inference आवश्यकताएँ।",
+      },
+    ],
+    samples: [
+      {
+        type: "text",
+        title: "Code review agent",
+        value: "Analyze repo diff and propose safe patch plan with rollback notes.",
+      },
+    ],
+    integration: {
+      requiresApiKey: true,
+      sdkQuality: "high",
+      selfHostDifficulty: "easy",
+    },
+    risk: {
+      safetyScore: 0.32,
+      misuseTags: ["prompt-injection"],
+    },
+    compliance: {
+      license: "api-terms",
+      commercialUse: "allowed",
+    },
+    provenance: {
+      source: "openrouter-models-api",
+      sourceUrl: "https://openrouter.ai/api/v1/models",
+      fetchedAt: isoDaysAgo(0),
+      lastVerifiedAt: isoDaysAgo(0),
+    },
+    published: true,
+    status: "verified",
+    createdAt: isoDaysAgo(7),
+    updatedAt: isoDaysAgo(0),
+  },
+  {
+    id: "anthropic-claude-sonnet-4-openrouter",
+    slug: "anthropic-claude-sonnet-4-openrouter",
+    name: "Claude Sonnet 4 (OpenRouter)",
+    summary: {
+      "en-IN":
+        "Large-context Anthropic model via OpenRouter for coding, analysis, and multimodal enterprise tasks.",
+      "hi-IN":
+        "coding, analysis और multimodal enterprise tasks के लिए OpenRouter पर Claude Sonnet 4।",
+    },
+    modality: ["text", "code", "image"],
+    tags: ["openrouter", "anthropic", "claude-sonnet-4", "analysis"],
+    capabilities: {
+      contextTokens: 1000000,
+      supportsImageInput: true,
+      supportsFileInput: true,
+      toolCalling: true,
+    },
+    limitations: [
+      "Premium output pricing can grow quickly for long responses.",
+      "Use guardrails for sensitive workflow automation.",
+    ],
+    benchmarks: {
+      contextWindowTokens: 1000000,
+      inputCostPerMUsd: 3.0,
+      outputCostPerMUsd: 15.0,
+      inputModalitiesCount: 3,
+    },
+    pricingUsd: {
+      inputPerM: 3.0,
+      outputPerM: 15.0,
+    },
+    quickstart: [
+      {
+        "en-IN": "Start with retrieval-augmented prompts to reduce unnecessary long outputs.",
+        "hi-IN": "अनावश्यक long outputs कम करने के लिए retrieval-augmented prompts से शुरू करें।",
+      },
+      {
+        "en-IN": "Enable structured tool schemas for deterministic automation.",
+        "hi-IN": "deterministic automation के लिए structured tool schemas सक्षम करें।",
+      },
+    ],
+    bestFor: [
+      {
+        "en-IN": "Long-context reasoning and high-quality coding guidance.",
+        "hi-IN": "long-context reasoning और high-quality coding guidance।",
+      },
+    ],
+    avoidWhen: [
+      {
+        "en-IN": "Ultra low-cost high-volume workloads.",
+        "hi-IN": "ultra low-cost high-volume workloads।",
+      },
+    ],
+    samples: [
+      {
+        type: "text",
+        title: "Architecture review",
+        value: "Evaluate migration risks and propose phased rollout checks.",
+      },
+    ],
+    integration: {
+      requiresApiKey: true,
+      sdkQuality: "high",
+      selfHostDifficulty: "easy",
+    },
+    risk: {
+      safetyScore: 0.34,
+      misuseTags: ["prompt-injection", "policy-bypass"],
+    },
+    compliance: {
+      license: "api-terms",
+      commercialUse: "allowed",
+    },
+    provenance: {
+      source: "openrouter-rankings+models",
+      sourceUrl: "https://openrouter.ai/rankings",
+      fetchedAt: isoDaysAgo(0),
+      lastVerifiedAt: isoDaysAgo(0),
+    },
+    published: true,
+    status: "verified",
+    createdAt: isoDaysAgo(8),
+    updatedAt: isoDaysAgo(0),
+  },
+  {
+    id: "google-gemini-2-5-flash-openrouter",
+    slug: "google-gemini-2-5-flash-openrouter",
+    name: "Gemini 2.5 Flash (OpenRouter)",
+    summary: {
+      "en-IN":
+        "Multimodal fast-tier model supporting text/image/audio/video inputs through OpenRouter.",
+      "hi-IN":
+        "OpenRouter पर text/image/audio/video inputs सपोर्ट करने वाला fast-tier multimodal मॉडल।",
+    },
+    modality: ["text", "code", "image", "audio", "video"],
+    tags: ["openrouter", "gemini-2.5-flash", "multimodal", "fast"],
+    capabilities: {
+      contextTokens: 1048576,
+      supportsImageInput: true,
+      supportsAudioInput: true,
+      supportsVideoInput: true,
+      toolCalling: true,
+    },
+    limitations: [
+      "Output modality is text-first in OpenRouter routing.",
+      "High multimodal context can increase latency and spend.",
+    ],
+    benchmarks: {
+      contextWindowTokens: 1048576,
+      inputCostPerMUsd: 0.3,
+      outputCostPerMUsd: 2.5,
+      inputModalitiesCount: 5,
+    },
+    pricingUsd: {
+      inputPerM: 0.3,
+      outputPerM: 2.5,
+    },
+    quickstart: [
+      {
+        "en-IN": "Use for fast multimodal understanding and route heavy reasoning to premium models.",
+        "hi-IN": "fast multimodal understanding के लिए उपयोग करें और heavy reasoning को premium models पर route करें।",
+      },
+    ],
+    bestFor: [
+      {
+        "en-IN": "Fast multimodal copilots, form understanding, and media-grounded Q&A.",
+        "hi-IN": "fast multimodal copilots, form understanding और media-grounded Q&A।",
+      },
+    ],
+    avoidWhen: [
+      {
+        "en-IN": "Tasks requiring guaranteed deterministic outputs without retries.",
+        "hi-IN": "बिना retries के guaranteed deterministic outputs वाले tasks।",
+      },
+    ],
+    samples: [
+      {
+        type: "text",
+        title: "Media-grounded answer",
+        value: "Summarize policy from mixed PDF + screenshot + voice note inputs.",
+      },
+    ],
+    integration: {
+      requiresApiKey: true,
+      sdkQuality: "high",
+      selfHostDifficulty: "easy",
+    },
+    risk: {
+      safetyScore: 0.31,
+      misuseTags: ["prompt-injection"],
+    },
+    compliance: {
+      license: "api-terms",
+      commercialUse: "allowed",
+    },
+    provenance: {
+      source: "openrouter-models-api",
+      sourceUrl: "https://openrouter.ai/api/v1/models",
+      fetchedAt: isoDaysAgo(0),
+      lastVerifiedAt: isoDaysAgo(0),
+    },
+    published: true,
+    status: "verified",
+    createdAt: isoDaysAgo(6),
+    updatedAt: isoDaysAgo(0),
+  },
+  {
+    id: "qwen-qwen3-coder-openrouter",
+    slug: "qwen-qwen3-coder-openrouter",
+    name: "Qwen3 Coder 480B (OpenRouter)",
+    summary: {
+      "en-IN":
+        "Large coding model surfaced via OpenRouter with strong cost-performance profile for dev teams.",
+      "hi-IN":
+        "dev teams के लिए मजबूत cost-performance प्रोफ़ाइल वाला OpenRouter पर उपलब्ध बड़ा coding मॉडल।",
+    },
+    modality: ["text", "code"],
+    tags: ["openrouter", "qwen3-coder", "coding", "developer"],
+    capabilities: {
+      contextTokens: 262144,
+      toolCalling: true,
+      codeRefactoring: true,
+    },
+    limitations: [
+      "May need stronger instruction scaffolding for strict enterprise style guides.",
+      "Use evaluation harness for critical production refactors.",
+    ],
+    benchmarks: {
+      contextWindowTokens: 262144,
+      inputCostPerMUsd: 0.22,
+      outputCostPerMUsd: 1.0,
+      inputModalitiesCount: 1,
+    },
+    pricingUsd: {
+      inputPerM: 0.22,
+      outputPerM: 1.0,
+    },
+    quickstart: [
+      {
+        "en-IN": "Start with small patch tasks and add unit-test generation in the same loop.",
+        "hi-IN": "small patch tasks से शुरू करें और उसी loop में unit-test generation जोड़ें।",
+      },
+    ],
+    bestFor: [
+      {
+        "en-IN": "Cost-aware coding copilots and large repo maintenance workflows.",
+        "hi-IN": "cost-aware coding copilots और बड़े repo maintenance workflows।",
+      },
+    ],
+    avoidWhen: [
+      {
+        "en-IN": "No-review auto-merge pipelines.",
+        "hi-IN": "no-review auto-merge pipelines।",
+      },
+    ],
+    samples: [
+      {
+        type: "code",
+        title: "Refactor patch",
+        value: "Convert callback-heavy handler into typed async pipeline with tests.",
+      },
+    ],
+    integration: {
+      requiresApiKey: true,
+      sdkQuality: "medium",
+      selfHostDifficulty: "medium",
+    },
+    risk: {
+      safetyScore: 0.29,
+      misuseTags: ["unsafe-code-suggestions"],
+    },
+    compliance: {
+      license: "api-terms",
+      commercialUse: "allowed",
+    },
+    provenance: {
+      source: "openrouter-models-api",
+      sourceUrl: "https://openrouter.ai/api/v1/models",
+      fetchedAt: isoDaysAgo(0),
+      lastVerifiedAt: isoDaysAgo(0),
+    },
+    published: true,
+    status: "verified",
+    createdAt: isoDaysAgo(5),
+    updatedAt: isoDaysAgo(0),
+  },
+  {
+    id: "moonshot-kimi-k2-openrouter",
+    slug: "moonshot-kimi-k2-openrouter",
+    name: "Kimi K2 (OpenRouter)",
+    summary: {
+      "en-IN": "Long-context model available in OpenRouter routing for coding, analysis, and agent planning.",
+      "hi-IN":
+        "coding, analysis और agent planning के लिए OpenRouter routing में उपलब्ध long-context मॉडल।",
+    },
+    modality: ["text", "code", "agent"],
+    tags: ["openrouter", "kimi-k2", "long-context", "agent-planning"],
+    capabilities: {
+      contextTokens: 131072,
+      toolCalling: true,
+      planExecution: true,
+    },
+    limitations: [
+      "Long contexts still require careful retrieval and chunking strategy.",
+      "Quality varies for domain-specific enterprise policy tasks without examples.",
+    ],
+    benchmarks: {
+      contextWindowTokens: 131072,
+      inputCostPerMUsd: 0.5,
+      outputCostPerMUsd: 2.4,
+      inputModalitiesCount: 1,
+    },
+    pricingUsd: {
+      inputPerM: 0.5,
+      outputPerM: 2.4,
+    },
+    quickstart: [
+      {
+        "en-IN": "Use instruction templates plus schema constraints for stable task planning.",
+        "hi-IN": "stable task planning के लिए instruction templates और schema constraints उपयोग करें।",
+      },
+    ],
+    bestFor: [
+      {
+        "en-IN": "Agent planning and long document-grounded analysis.",
+        "hi-IN": "agent planning और long document-grounded analysis।",
+      },
+    ],
+    avoidWhen: [
+      {
+        "en-IN": "Hard real-time sub-second responses.",
+        "hi-IN": "hard real-time sub-second responses।",
+      },
+    ],
+    samples: [
+      {
+        type: "text",
+        title: "Planning output",
+        value: "Generate staged migration plan with risk gates and rollback checks.",
+      },
+    ],
+    integration: {
+      requiresApiKey: true,
+      sdkQuality: "medium",
+      selfHostDifficulty: "medium",
+    },
+    risk: {
+      safetyScore: 0.33,
+      misuseTags: ["automation-abuse"],
+    },
+    compliance: {
+      license: "api-terms",
+      commercialUse: "allowed",
+    },
+    provenance: {
+      source: "openrouter-rankings+models",
+      sourceUrl: "https://openrouter.ai/rankings",
+      fetchedAt: isoDaysAgo(0),
+      lastVerifiedAt: isoDaysAgo(0),
+    },
+    published: true,
+    status: "verified",
+    createdAt: isoDaysAgo(5),
+    updatedAt: isoDaysAgo(0),
+  },
+  {
+    id: "deepseek-v3-1-openrouter",
+    slug: "deepseek-v3-1-openrouter",
+    name: "DeepSeek V3.1 (OpenRouter)",
+    summary: {
+      "en-IN":
+        "Cost-efficient text model in OpenRouter for everyday assistant, coding, and automation prompts.",
+      "hi-IN":
+        "assistant, coding और automation prompts के लिए OpenRouter का cost-efficient text मॉडल।",
+    },
+    modality: ["text", "code"],
+    tags: ["openrouter", "deepseek-v3.1", "cost-efficient", "assistant"],
+    capabilities: {
+      contextTokens: 32768,
+      toolCalling: true,
+    },
+    limitations: [
+      "Shorter context window versus latest high-context frontier models.",
+      "Needs prompt constraints for compliance-sensitive outputs.",
+    ],
+    benchmarks: {
+      contextWindowTokens: 32768,
+      inputCostPerMUsd: 0.15,
+      outputCostPerMUsd: 0.75,
+      inputModalitiesCount: 1,
+    },
+    pricingUsd: {
+      inputPerM: 0.15,
+      outputPerM: 0.75,
+    },
+    quickstart: [
+      {
+        "en-IN": "Use for high-volume assistant traffic and route edge cases to stronger models.",
+        "hi-IN": "high-volume assistant traffic के लिए उपयोग करें और edge cases को मजबूत models पर route करें।",
+      },
+    ],
+    bestFor: [
+      {
+        "en-IN": "Budget-aware automation and customer support drafting.",
+        "hi-IN": "budget-aware automation और customer support drafting।",
+      },
+    ],
+    avoidWhen: [
+      {
+        "en-IN": "Very long-context policy analysis tasks.",
+        "hi-IN": "बहुत लंबे-context policy analysis tasks।",
+      },
+    ],
+    samples: [
+      { type: "text", title: "Support draft", value: "Generate concise refund-policy reply with checklist." },
+    ],
+    integration: {
+      requiresApiKey: true,
+      sdkQuality: "medium",
+      selfHostDifficulty: "easy",
+    },
+    risk: {
+      safetyScore: 0.3,
+      misuseTags: ["policy-misclassification"],
+    },
+    compliance: {
+      license: "api-terms",
+      commercialUse: "allowed",
+    },
+    provenance: {
+      source: "openrouter-models-api",
+      sourceUrl: "https://openrouter.ai/api/v1/models",
+      fetchedAt: isoDaysAgo(0),
+      lastVerifiedAt: isoDaysAgo(0),
+    },
+    published: true,
+    status: "verified",
+    createdAt: isoDaysAgo(4),
+    updatedAt: isoDaysAgo(0),
+  },
+  {
+    id: "elevenlabs-flash-v2-5",
+    slug: "elevenlabs-flash-v2-5",
+    name: "ElevenLabs Flash v2.5",
+    summary: {
+      "en-IN":
+        "ElevenLabs low-latency TTS model optimized for real-time conversational applications.",
+      "hi-IN":
+        "realtime conversational applications के लिए optimized ElevenLabs का low-latency TTS मॉडल।",
+    },
+    modality: ["audio", "agent", "text"],
+    tags: ["elevenlabs", "tts", "realtime", "voice"],
+    capabilities: {
+      realtimeStreaming: true,
+      latencyMsClaim: 75,
+      supportedLanguages: 32,
+      voiceCloning: true,
+    },
+    limitations: [
+      "Conversation quality still depends on turn management and playback stack.",
+      "Voice cloning must include explicit user consent controls.",
+    ],
+    benchmarks: {
+      latencyClaimMs: 75,
+      languageCoverage: 32,
+      realtimeReadiness: 91.0,
+    },
+    pricingUsd: {
+      monthly: 5,
+    },
+    quickstart: [
+      {
+        "en-IN": "Use Flash v2.5 for call assistants where latency is the primary requirement.",
+        "hi-IN": "जहां latency मुख्य आवश्यकता है वहां call assistants के लिए Flash v2.5 उपयोग करें।",
+      },
+    ],
+    bestFor: [
+      {
+        "en-IN": "Live support agents and voice bots requiring quick response.",
+        "hi-IN": "तेज response की जरूरत वाले live support agents और voice bots।",
+      },
+    ],
+    avoidWhen: [
+      {
+        "en-IN": "Studio-grade long-form narration workflows.",
+        "hi-IN": "studio-grade long-form narration workflows।",
+      },
+    ],
+    samples: [
+      { type: "audio", title: "Realtime IVR voice", value: "Instant bilingual IVR prompt responses." },
+    ],
+    integration: {
+      requiresApiKey: true,
+      sdkQuality: "high",
+      selfHostDifficulty: "easy",
+    },
+    risk: {
+      safetyScore: 0.45,
+      misuseTags: ["voice-cloning", "impersonation"],
+    },
+    compliance: {
+      license: "api-terms",
+      commercialUse: "allowed",
+    },
+    provenance: {
+      source: "elevenlabs-model-docs",
+      sourceUrl: "https://elevenlabs.io/docs/models/",
+      fetchedAt: isoDaysAgo(0),
+      lastVerifiedAt: isoDaysAgo(0),
+    },
+    published: true,
+    status: "verified",
+    createdAt: isoDaysAgo(3),
+    updatedAt: isoDaysAgo(0),
+  },
+  {
+    id: "elevenlabs-turbo-v2-5",
+    slug: "elevenlabs-turbo-v2-5",
+    name: "ElevenLabs Turbo v2.5",
+    summary: {
+      "en-IN": "Balanced-latency TTS model from ElevenLabs for high-volume narration and assistant output.",
+      "hi-IN":
+        "high-volume narration और assistant output के लिए ElevenLabs का balanced-latency TTS मॉडल।",
+    },
+    modality: ["audio", "text"],
+    tags: ["elevenlabs", "tts", "turbo", "voice"],
+    capabilities: {
+      realtimeStreaming: true,
+      latencyMsClaim: 250,
+      supportedLanguages: 32,
+      voiceCloning: true,
+    },
+    limitations: [
+      "Not as expressive as premium creative voice models for character-heavy content.",
+      "Needs strong content policy checks before automated publishing.",
+    ],
+    benchmarks: {
+      latencyClaimMs: 250,
+      languageCoverage: 32,
+      throughputReadiness: 88.0,
+    },
+    pricingUsd: {
+      monthly: 22,
+    },
+    quickstart: [
+      {
+        "en-IN": "Prefer Turbo v2.5 for bulk generation where speed and cost must stay balanced.",
+        "hi-IN": "जहां speed और cost दोनों balanced चाहिए वहां bulk generation के लिए Turbo v2.5 चुनें।",
+      },
+    ],
+    bestFor: [
+      {
+        "en-IN": "Large-scale TTS workloads and responsive assistant narration.",
+        "hi-IN": "large-scale TTS workloads और responsive assistant narration।",
+      },
+    ],
+    avoidWhen: [
+      {
+        "en-IN": "High-emotion cinematic dubbing without post-processing.",
+        "hi-IN": "post-processing बिना high-emotion cinematic dubbing।",
+      },
+    ],
+    samples: [
+      { type: "audio", title: "Batch narration", value: "Generate 200 short policy explainers." },
+    ],
+    integration: {
+      requiresApiKey: true,
+      sdkQuality: "high",
+      selfHostDifficulty: "easy",
+    },
+    risk: {
+      safetyScore: 0.42,
+      misuseTags: ["voice-cloning"],
+    },
+    compliance: {
+      license: "api-terms",
+      commercialUse: "allowed",
+    },
+    provenance: {
+      source: "elevenlabs-model-docs",
+      sourceUrl: "https://elevenlabs.io/docs/models/",
+      fetchedAt: isoDaysAgo(0),
+      lastVerifiedAt: isoDaysAgo(0),
+    },
+    published: true,
+    status: "verified",
+    createdAt: isoDaysAgo(3),
+    updatedAt: isoDaysAgo(0),
+  },
+  {
+    id: "elevenlabs-scribe-v2",
+    slug: "elevenlabs-scribe-v2",
+    name: "ElevenLabs Scribe v2",
+    summary: {
+      "en-IN":
+        "Speech-to-text model from ElevenLabs designed for multilingual transcription workflows.",
+      "hi-IN":
+        "multilingual transcription workflows के लिए ElevenLabs का speech-to-text मॉडल।",
+    },
+    modality: ["audio", "text", "search"],
+    tags: ["elevenlabs", "speech-to-text", "transcription", "multilingual"],
+    capabilities: {
+      speechToText: true,
+      supportedLanguages: 99,
+      diarization: true,
+      timestampedOutput: true,
+    },
+    limitations: [
+      "Domain-specific jargon requires custom vocabulary adaptation.",
+      "Noisy multi-speaker audio may need pre-cleaning for best accuracy.",
+    ],
+    benchmarks: {
+      languageCoverage: 99,
+      transcriptCompleteness: 87.4,
+      diarizationStability: 83.2,
+    },
+    pricingUsd: {
+      monthly: 0,
+    },
+    quickstart: [
+      {
+        "en-IN": "Use chunked uploads and speaker labeling for meeting-note pipelines.",
+        "hi-IN": "meeting-note pipelines के लिए chunked uploads और speaker labeling उपयोग करें।",
+      },
+    ],
+    bestFor: [
+      {
+        "en-IN": "Call-center logs, podcasts, and multilingual transcription pipelines.",
+        "hi-IN": "call-center logs, podcasts और multilingual transcription pipelines।",
+      },
+    ],
+    avoidWhen: [
+      {
+        "en-IN": "Legal-grade transcripts without human review.",
+        "hi-IN": "human review के बिना legal-grade transcripts।",
+      },
+    ],
+    samples: [
+      { type: "text", title: "Transcript excerpt", value: "Hindi-English meeting transcript with timestamps." },
+    ],
+    integration: {
+      requiresApiKey: true,
+      sdkQuality: "high",
+      selfHostDifficulty: "easy",
+    },
+    risk: {
+      safetyScore: 0.24,
+      misuseTags: ["pii-leakage"],
+    },
+    compliance: {
+      license: "api-terms",
+      commercialUse: "allowed",
+    },
+    provenance: {
+      source: "elevenlabs-model-docs",
+      sourceUrl: "https://elevenlabs.io/docs/models/",
+      fetchedAt: isoDaysAgo(0),
+      lastVerifiedAt: isoDaysAgo(0),
+    },
+    published: true,
+    status: "verified",
+    createdAt: isoDaysAgo(3),
+    updatedAt: isoDaysAgo(0),
+  },
+  {
+    id: "openai-agents-sdk",
+    slug: "openai-agents-sdk",
+    name: "OpenAI Agents SDK",
+    summary: {
+      "en-IN":
+        "Framework for building tool-using, guardrailed agents with tracing and handoff patterns.",
+      "hi-IN":
+        "tool-using, guardrailed agents बनाने के लिए tracing और handoff patterns वाला framework।",
+    },
+    modality: ["agent", "code", "search", "text"],
+    tags: ["agents", "openai", "orchestration", "tool-calling"],
+    capabilities: {
+      toolCalling: true,
+      handoffs: true,
+      tracing: true,
+      guardrails: true,
+      memoryPatterns: true,
+    },
+    limitations: [
+      "Production governance still requires external policy and approval layers.",
+      "Agent complexity can grow quickly without strict scope controls.",
+    ],
+    benchmarks: {
+      githubStars: 19114,
+      githubForks: 3174,
+      activeMaintainerSignal: 92.0,
+    },
+    pricingUsd: {
+      monthly: 0,
+    },
+    quickstart: [
+      {
+        "en-IN": "Start with single-agent tool orchestration before adding multi-agent handoffs.",
+        "hi-IN": "multi-agent handoffs जोड़ने से पहले single-agent tool orchestration से शुरुआत करें।",
+      },
+      {
+        "en-IN": "Instrument traces from day one for debugging and quality checks.",
+        "hi-IN": "debugging और quality checks के लिए शुरुआत से traces instrument करें।",
+      },
+    ],
+    bestFor: [
+      {
+        "en-IN": "Developer teams building reliable tool-using agents.",
+        "hi-IN": "विश्वसनीय tool-using agents बनाने वाली developer teams।",
+      },
+    ],
+    avoidWhen: [
+      {
+        "en-IN": "No-code teams without engineering support.",
+        "hi-IN": "engineering support के बिना no-code टीमें।",
+      },
+    ],
+    samples: [
+      {
+        type: "code",
+        title: "Agent handoff flow",
+        value: "router agent -> research agent -> coding agent with policy checks",
+      },
+    ],
+    integration: {
+      requiresApiKey: true,
+      sdkQuality: "high",
+      selfHostDifficulty: "medium",
+    },
+    risk: {
+      safetyScore: 0.4,
+      misuseTags: ["automation-abuse", "tool-misfire"],
+    },
+    compliance: {
+      license: "api-terms",
+      commercialUse: "allowed",
+    },
+    provenance: {
+      source: "openai-agents-docs",
+      sourceUrl: "https://platform.openai.com/docs/guides/agents-sdk",
+      fetchedAt: isoDaysAgo(0),
+      lastVerifiedAt: isoDaysAgo(0),
+    },
+    published: true,
+    status: "verified",
+    createdAt: isoDaysAgo(4),
+    updatedAt: isoDaysAgo(0),
+  },
+  {
+    id: "google-agent-development-kit",
+    slug: "google-agent-development-kit",
+    name: "Google Agent Development Kit (ADK)",
+    summary: {
+      "en-IN":
+        "Open-source toolkit for building and evaluating Gemini-powered agents and workflows.",
+      "hi-IN":
+        "Gemini-powered agents और workflows बनाने/मूल्यांकन के लिए open-source toolkit (ADK)।",
+    },
+    modality: ["agent", "code", "search"],
+    tags: ["adk", "google", "agents", "gemini"],
+    capabilities: {
+      toolCalling: true,
+      multiAgentPatterns: true,
+      evalSupport: true,
+      deploymentAdapters: true,
+    },
+    limitations: [
+      "Requires engineering effort for production-grade observability and governance.",
+      "Feature surface evolves quickly; pin versions in production.",
+    ],
+    benchmarks: {
+      githubStars: 17950,
+      githubForks: 2968,
+      activeMaintainerSignal: 90.0,
+    },
+    pricingUsd: {
+      monthly: 0,
+    },
+    quickstart: [
+      {
+        "en-IN": "Prototype with local tools first, then add external API integrations incrementally.",
+        "hi-IN": "पहले local tools से prototype करें, फिर external API integrations धीरे-धीरे जोड़ें।",
+      },
+    ],
+    bestFor: [
+      {
+        "en-IN": "Teams building Gemini-based multi-step agent workflows.",
+        "hi-IN": "Gemini आधारित multi-step agent workflows बनाने वाली टीमें।",
+      },
+    ],
+    avoidWhen: [
+      {
+        "en-IN": "Organizations needing fully managed zero-code automation.",
+        "hi-IN": "fully managed zero-code automation चाहने वाले organizations।",
+      },
+    ],
+    samples: [
+      { type: "code", title: "ADK flow", value: "intent router -> retriever -> planner -> executor" },
+    ],
+    integration: {
+      requiresApiKey: true,
+      sdkQuality: "medium",
+      selfHostDifficulty: "medium",
+    },
+    risk: {
+      safetyScore: 0.36,
+      misuseTags: ["unsafe-tooling"],
+    },
+    compliance: {
+      license: "apache-2.0",
+      commercialUse: "allowed",
+    },
+    provenance: {
+      source: "google-adk-docs",
+      sourceUrl: "https://google.github.io/adk-docs/",
+      fetchedAt: isoDaysAgo(0),
+      lastVerifiedAt: isoDaysAgo(0),
+    },
+    published: true,
+    status: "verified",
+    createdAt: isoDaysAgo(4),
+    updatedAt: isoDaysAgo(0),
+  },
+  {
+    id: "langgraph-v1-framework",
+    slug: "langgraph-v1-framework",
+    name: "LangGraph v1",
+    summary: {
+      "en-IN": "Graph-based orchestration framework for resilient long-running agents and HITL flows.",
+      "hi-IN":
+        "resilient long-running agents और HITL flows के लिए graph-based orchestration framework।",
+    },
+    modality: ["agent", "code", "search", "text"],
+    tags: ["langgraph", "agents", "workflow", "hitl"],
+    capabilities: {
+      statefulExecution: true,
+      humanApprovalSteps: true,
+      durableWorkflows: true,
+      toolCalling: true,
+    },
+    limitations: [
+      "Graph design complexity rises with broad tool sets and branching conditions.",
+      "Requires dedicated testing harness to prevent regression in agent paths.",
+    ],
+    benchmarks: {
+      githubStars: 25040,
+      githubForks: 4373,
+      activeMaintainerSignal: 91.0,
+    },
+    pricingUsd: {
+      monthly: 0,
+    },
+    quickstart: [
+      {
+        "en-IN": "Model your workflow as explicit states and transitions before writing custom tools.",
+        "hi-IN": "custom tools लिखने से पहले workflow को explicit states और transitions में मॉडल करें।",
+      },
+    ],
+    bestFor: [
+      {
+        "en-IN": "Production agents needing persistence, retries, and human approvals.",
+        "hi-IN": "persistence, retries और human approvals चाहने वाले production agents।",
+      },
+    ],
+    avoidWhen: [
+      {
+        "en-IN": "Simple FAQ bots that do not need stateful orchestration.",
+        "hi-IN": "stateful orchestration बिना simple FAQ bots।",
+      },
+    ],
+    samples: [
+      { type: "code", title: "State graph", value: "ingest -> classify -> research -> draft -> approve" },
+    ],
+    integration: {
+      requiresApiKey: false,
+      sdkQuality: "high",
+      selfHostDifficulty: "medium",
+    },
+    risk: {
+      safetyScore: 0.34,
+      misuseTags: ["automation-abuse"],
+    },
+    compliance: {
+      license: "mit",
+      commercialUse: "allowed",
+    },
+    provenance: {
+      source: "langgraph-docs",
+      sourceUrl: "https://docs.langchain.com/oss/python/langgraph/overview",
+      fetchedAt: isoDaysAgo(0),
+      lastVerifiedAt: isoDaysAgo(0),
+    },
+    published: true,
+    status: "verified",
+    createdAt: isoDaysAgo(4),
+    updatedAt: isoDaysAgo(0),
+  },
+  {
+    id: "llamaindex-agent-workflow",
+    slug: "llamaindex-agent-workflow",
+    name: "LlamaIndex AgentWorkflow",
+    summary: {
+      "en-IN":
+        "LlamaIndex workflow framework for multi-agent systems with explicit handoff and tool routing.",
+      "hi-IN":
+        "explicit handoff और tool routing के साथ multi-agent systems के लिए LlamaIndex workflow framework।",
+    },
+    modality: ["agent", "code", "search", "text"],
+    tags: ["llamaindex", "agentworkflow", "rag", "multi-agent"],
+    capabilities: {
+      agentHandoffs: true,
+      toolCalling: true,
+      retrievalIntegration: true,
+      workflowState: true,
+    },
+    limitations: [
+      "Complex retrieval-heavy flows need careful memory and context controls.",
+      "Reliability depends on external model/tool stack quality.",
+    ],
+    benchmarks: {
+      githubStars: 47155,
+      githubForks: 6862,
+      activeMaintainerSignal: 89.0,
+    },
+    pricingUsd: {
+      monthly: 0,
+    },
+    quickstart: [
+      {
+        "en-IN": "Start with one retriever + one planner agent before scaling to specialist agents.",
+        "hi-IN": "specialist agents तक बढ़ाने से पहले one retriever + one planner agent से शुरू करें।",
+      },
+    ],
+    bestFor: [
+      {
+        "en-IN": "RAG-native agents that require structured workflow control.",
+        "hi-IN": "structured workflow control वाले RAG-native agents।",
+      },
+    ],
+    avoidWhen: [
+      {
+        "en-IN": "Single-turn assistants with no retrieval/tool requirements.",
+        "hi-IN": "retrieval/tool requirements बिना single-turn assistants।",
+      },
+    ],
+    samples: [
+      { type: "code", title: "Workflow snippet", value: "retrieve -> reason -> call tool -> verify -> respond" },
+    ],
+    integration: {
+      requiresApiKey: false,
+      sdkQuality: "medium",
+      selfHostDifficulty: "medium",
+    },
+    risk: {
+      safetyScore: 0.33,
+      misuseTags: ["tool-misfire"],
+    },
+    compliance: {
+      license: "mit",
+      commercialUse: "allowed",
+    },
+    provenance: {
+      source: "llamaindex-docs",
+      sourceUrl: "https://docs.llamaindex.ai/en/stable/understanding/agent/multi_agent/",
+      fetchedAt: isoDaysAgo(0),
+      lastVerifiedAt: isoDaysAgo(0),
+    },
+    published: true,
+    status: "verified",
+    createdAt: isoDaysAgo(4),
+    updatedAt: isoDaysAgo(0),
+  },
+  {
+    id: "hf-qwen3-tts-12hz-1-7b-customvoice",
+    slug: "hf-qwen3-tts-12hz-1-7b-customvoice",
+    name: "Qwen3 TTS 12Hz 1.7B CustomVoice (HF)",
+    summary: {
+      "en-IN":
+        "Trending open speech model on Hugging Face focused on customizable text-to-speech output.",
+      "hi-IN":
+        "customizable text-to-speech output वाला Hugging Face पर trending open speech मॉडल।",
+    },
+    modality: ["audio", "text"],
+    tags: ["huggingface", "qwen3-tts", "open-model", "voice"],
+    capabilities: {
+      textToSpeech: true,
+      customVoice: true,
+      hfTrending: true,
+    },
+    limitations: [
+      "Production-readiness depends on your own inference, moderation, and quality pipeline.",
+      "License and commercial terms must be checked per model card.",
+    ],
+    benchmarks: {
+      hfTrendingLikes: 1172,
+      trendFreshnessDays: 26,
+      openVoiceModelMomentum: 84.0,
+    },
+    pricingUsd: {
+      monthly: 0,
+    },
+    quickstart: [
+      {
+        "en-IN": "Read model card and run small-scale eval before production integration.",
+        "hi-IN": "production integration से पहले model card पढ़ें और small-scale eval चलाएं।",
+      },
+    ],
+    bestFor: [
+      {
+        "en-IN": "Teams exploring open-weight voice synthesis stacks.",
+        "hi-IN": "open-weight voice synthesis stacks एक्सप्लोर करने वाली टीमें।",
+      },
+    ],
+    avoidWhen: [
+      {
+        "en-IN": "Immediate enterprise rollout without internal evaluation and guardrails.",
+        "hi-IN": "internal evaluation और guardrails बिना immediate enterprise rollout।",
+      },
+    ],
+    samples: [
+      { type: "audio", title: "Open model voice demo", value: "Custom-voice short instruction playback." },
+    ],
+    integration: {
+      requiresApiKey: false,
+      sdkQuality: "medium",
+      selfHostDifficulty: "hard",
+    },
+    risk: {
+      safetyScore: 0.52,
+      misuseTags: ["voice-cloning", "impersonation"],
+    },
+    compliance: {
+      license: "unknown",
+      commercialUse: "unknown",
+    },
+    provenance: {
+      source: "huggingface-trending",
+      sourceUrl: "https://huggingface.co/api/trending?type=model",
+      fetchedAt: isoDaysAgo(0),
+      lastVerifiedAt: isoDaysAgo(0),
+    },
+    published: true,
+    status: "verified",
+    createdAt: isoDaysAgo(2),
+    updatedAt: isoDaysAgo(0),
+  },
+  {
+    id: "hf-nvidia-personaplex-7b-v1",
+    slug: "hf-nvidia-personaplex-7b-v1",
+    name: "NVIDIA PersonaPlex 7B v1 (HF)",
+    summary: {
+      "en-IN":
+        "Trending audio-to-audio model on Hugging Face for conversational persona-style interactions.",
+      "hi-IN":
+        "conversational persona interactions के लिए Hugging Face का trending audio-to-audio मॉडल।",
+    },
+    modality: ["audio", "agent", "text"],
+    tags: ["huggingface", "nvidia", "audio-to-audio", "persona"],
+    capabilities: {
+      audioToAudio: true,
+      conversationalPersona: true,
+      hfTrending: true,
+    },
+    limitations: [
+      "Deployment quality depends on audio stack design and runtime controls.",
+      "Model card policy constraints must be reviewed before commercial rollout.",
+    ],
+    benchmarks: {
+      hfTrendingLikes: 2182,
+      trendFreshnessDays: 9,
+      openAudioModelMomentum: 88.0,
+    },
+    pricingUsd: {
+      monthly: 0,
+    },
+    quickstart: [
+      {
+        "en-IN": "Benchmark turn latency and interruption handling on your target network.",
+        "hi-IN": "target network पर turn latency और interruption handling benchmark करें।",
+      },
+    ],
+    bestFor: [
+      {
+        "en-IN": "Experimental voice-agent R&D with open model stacks.",
+        "hi-IN": "open model stacks के साथ experimental voice-agent R&D।",
+      },
+    ],
+    avoidWhen: [
+      {
+        "en-IN": "Regulated production workloads without rigorous human oversight.",
+        "hi-IN": "rigorous human oversight बिना regulated production workloads।",
+      },
+    ],
+    samples: [
+      { type: "audio", title: "Persona voice turn", value: "Character-style conversational reply." },
+    ],
+    integration: {
+      requiresApiKey: false,
+      sdkQuality: "low",
+      selfHostDifficulty: "hard",
+    },
+    risk: {
+      safetyScore: 0.55,
+      misuseTags: ["voice-cloning", "social-engineering"],
+    },
+    compliance: {
+      license: "unknown",
+      commercialUse: "unknown",
+    },
+    provenance: {
+      source: "huggingface-trending",
+      sourceUrl: "https://huggingface.co/api/trending?type=model",
+      fetchedAt: isoDaysAgo(0),
+      lastVerifiedAt: isoDaysAgo(0),
+    },
+    published: true,
+    status: "verified",
+    createdAt: isoDaysAgo(2),
+    updatedAt: isoDaysAgo(0),
+  },
+  {
+    id: "openai-gpt-5-openrouter",
+    slug: "openai-gpt-5-openrouter",
+    name: "OpenAI GPT-5 (OpenRouter)",
+    summary: {
+      "en-IN":
+        "Frontier model on OpenRouter with multimodal inputs and strong reasoning depth for complex tasks.",
+      "hi-IN":
+        "complex tasks के लिए deep reasoning और multimodal inputs वाला OpenRouter frontier मॉडल।",
+    },
+    modality: ["text", "code", "image"],
+    tags: ["openrouter", "gpt-5", "reasoning", "multimodal"],
+    capabilities: {
+      contextTokens: 400000,
+      supportsImageInput: true,
+      supportsFileInput: true,
+      toolCalling: true,
+      structuredOutput: true,
+    },
+    limitations: [
+      "Higher output token cost needs strict budget controls.",
+      "For latency-sensitive UX, route simple prompts to smaller model tiers.",
+    ],
+    benchmarks: {
+      contextWindowTokens: 400000,
+      inputCostPerMUsd: 1.25,
+      outputCostPerMUsd: 10.0,
+      inputModalitiesCount: 3,
+    },
+    pricingUsd: {
+      inputPerM: 1.25,
+      outputPerM: 10.0,
+    },
+    quickstart: [
+      {
+        "en-IN": "Use cached system prompts and short response constraints for cost control.",
+        "hi-IN": "cost control के लिए cached system prompts और short response constraints उपयोग करें।",
+      },
+    ],
+    bestFor: [
+      {
+        "en-IN": "Complex reasoning, coding design decisions, and high-risk analysis tasks.",
+        "hi-IN": "complex reasoning, coding design decisions और high-risk analysis tasks।",
+      },
+    ],
+    avoidWhen: [
+      {
+        "en-IN": "Simple low-stakes chat where cheaper models are sufficient.",
+        "hi-IN": "simple low-stakes chat जहां सस्ते models पर्याप्त हों।",
+      },
+    ],
+    samples: [
+      { type: "text", title: "Architecture diagnosis", value: "Pinpoint bottlenecks and propose migration strategy." },
+    ],
+    integration: {
+      requiresApiKey: true,
+      sdkQuality: "high",
+      selfHostDifficulty: "easy",
+    },
+    risk: {
+      safetyScore: 0.31,
+      misuseTags: ["prompt-injection"],
+    },
+    compliance: {
+      license: "api-terms",
+      commercialUse: "allowed",
+    },
+    provenance: {
+      source: "openrouter-models-api",
+      sourceUrl: "https://openrouter.ai/api/v1/models",
+      fetchedAt: isoDaysAgo(0),
+      lastVerifiedAt: isoDaysAgo(0),
+    },
+    published: true,
+    status: "verified",
+    createdAt: isoDaysAgo(2),
+    updatedAt: isoDaysAgo(0),
+  },
+  {
+    id: "anthropic-claude-opus-4-1-openrouter",
+    slug: "anthropic-claude-opus-4-1-openrouter",
+    name: "Claude Opus 4.1 (OpenRouter)",
+    summary: {
+      "en-IN":
+        "Premium Anthropic model in OpenRouter routing for deep analysis and high-stakes reasoning quality.",
+      "hi-IN":
+        "deep analysis और high-stakes reasoning quality के लिए OpenRouter पर premium Anthropic मॉडल।",
+    },
+    modality: ["text", "code", "image"],
+    tags: ["openrouter", "claude-opus-4.1", "analysis", "premium"],
+    capabilities: {
+      contextTokens: 200000,
+      supportsImageInput: true,
+      supportsFileInput: true,
+      toolCalling: true,
+    },
+    limitations: [
+      "Premium pricing makes it unsuitable for high-volume low-value requests.",
+      "Still requires robust policy checks for sensitive automation paths.",
+    ],
+    benchmarks: {
+      contextWindowTokens: 200000,
+      inputCostPerMUsd: 15.0,
+      outputCostPerMUsd: 75.0,
+      inputModalitiesCount: 3,
+    },
+    pricingUsd: {
+      inputPerM: 15.0,
+      outputPerM: 75.0,
+    },
+    quickstart: [
+      {
+        "en-IN": "Use selective routing so only hardest tasks reach Opus tier.",
+        "hi-IN": "केवल सबसे कठिन tasks को Opus tier तक पहुंचाने के लिए selective routing रखें।",
+      },
+    ],
+    bestFor: [
+      {
+        "en-IN": "Deep legal/policy analysis drafts and complex engineering reasoning.",
+        "hi-IN": "deep legal/policy analysis drafts और complex engineering reasoning।",
+      },
+    ],
+    avoidWhen: [
+      {
+        "en-IN": "High-throughput workloads with strict cost ceilings.",
+        "hi-IN": "strict cost ceilings वाले high-throughput workloads।",
+      },
+    ],
+    samples: [
+      { type: "text", title: "Policy synthesis", value: "Summarize multi-region compliance deltas with risk flags." },
+    ],
+    integration: {
+      requiresApiKey: true,
+      sdkQuality: "high",
+      selfHostDifficulty: "easy",
+    },
+    risk: {
+      safetyScore: 0.35,
+      misuseTags: ["policy-bypass"],
+    },
+    compliance: {
+      license: "api-terms",
+      commercialUse: "allowed",
+    },
+    provenance: {
+      source: "openrouter-models-api",
+      sourceUrl: "https://openrouter.ai/api/v1/models",
+      fetchedAt: isoDaysAgo(0),
+      lastVerifiedAt: isoDaysAgo(0),
+    },
+    published: true,
+    status: "verified",
+    createdAt: isoDaysAgo(2),
+    updatedAt: isoDaysAgo(0),
+  },
+  {
+    id: "google-gemini-2-5-pro-openrouter",
+    slug: "google-gemini-2-5-pro-openrouter",
+    name: "Gemini 2.5 Pro (OpenRouter)",
+    summary: {
+      "en-IN":
+        "Large-context multimodal model for advanced analysis and tool-augmented workflows via OpenRouter.",
+      "hi-IN":
+        "advanced analysis और tool-augmented workflows के लिए OpenRouter का large-context multimodal मॉडल।",
+    },
+    modality: ["text", "code", "image", "audio", "video"],
+    tags: ["openrouter", "gemini-2.5-pro", "multimodal", "analysis"],
+    capabilities: {
+      contextTokens: 1048576,
+      supportsImageInput: true,
+      supportsAudioInput: true,
+      supportsVideoInput: true,
+      toolCalling: true,
+    },
+    limitations: [
+      "Complex multimodal prompts may increase latency at peak load.",
+      "For routine tasks, flash-tier routing is generally more cost-effective.",
+    ],
+    benchmarks: {
+      contextWindowTokens: 1048576,
+      inputCostPerMUsd: 1.25,
+      outputCostPerMUsd: 10.0,
+      inputModalitiesCount: 5,
+    },
+    pricingUsd: {
+      inputPerM: 1.25,
+      outputPerM: 10.0,
+    },
+    quickstart: [
+      {
+        "en-IN": "Apply modality-aware prompting and keep media context concise.",
+        "hi-IN": "modality-aware prompting अपनाएं और media context को concise रखें।",
+      },
+    ],
+    bestFor: [
+      {
+        "en-IN": "Complex multimodal analysis and long-context enterprise tasks.",
+        "hi-IN": "complex multimodal analysis और long-context enterprise tasks।",
+      },
+    ],
+    avoidWhen: [
+      {
+        "en-IN": "Simple Q&A pipelines where high context is unnecessary.",
+        "hi-IN": "simple Q&A pipelines जहां high context की जरूरत नहीं है।",
+      },
+    ],
+    samples: [
+      { type: "text", title: "Multimodal audit", value: "Analyze video + transcript + policy PDF for violations." },
+    ],
+    integration: {
+      requiresApiKey: true,
+      sdkQuality: "high",
+      selfHostDifficulty: "easy",
+    },
+    risk: {
+      safetyScore: 0.33,
+      misuseTags: ["prompt-injection"],
+    },
+    compliance: {
+      license: "api-terms",
+      commercialUse: "allowed",
+    },
+    provenance: {
+      source: "openrouter-models-api",
+      sourceUrl: "https://openrouter.ai/api/v1/models",
+      fetchedAt: isoDaysAgo(0),
+      lastVerifiedAt: isoDaysAgo(0),
+    },
+    published: true,
+    status: "verified",
+    createdAt: isoDaysAgo(2),
+    updatedAt: isoDaysAgo(0),
+  },
+  {
+    id: "hf-zai-glm-5",
+    slug: "hf-zai-glm-5",
+    name: "GLM-5 (HF Trending)",
+    summary: {
+      "en-IN": "Trending text-generation model on Hugging Face with strong open-community momentum.",
+      "hi-IN": "मजबूत open-community momentum वाला Hugging Face का trending text-generation मॉडल।",
+    },
+    modality: ["text", "code"],
+    tags: ["huggingface", "glm-5", "text-generation", "open-model"],
+    capabilities: {
+      hfTrending: true,
+      supportsTextGeneration: true,
+      openWeights: true,
+    },
+    limitations: [
+      "Enterprise readiness depends on your own eval, safety, and hosting stack.",
+      "Licensing must be checked directly from the model card before commercial use.",
+    ],
+    benchmarks: {
+      hfTrendingLikes: 1507,
+      trendFreshnessDays: 11,
+      communityMomentum: 86.0,
+    },
+    pricingUsd: {
+      monthly: 0,
+    },
+    quickstart: [
+      {
+        "en-IN": "Run task-specific eval suite locally before production adoption.",
+        "hi-IN": "production adoption से पहले task-specific eval suite local में चलाएं।",
+      },
+    ],
+    bestFor: [
+      {
+        "en-IN": "R&D teams exploring strong open models for text workloads.",
+        "hi-IN": "text workloads के लिए मजबूत open models खोजने वाली R&D टीमें।",
+      },
+    ],
+    avoidWhen: [
+      {
+        "en-IN": "Regulated deployments without internal model governance.",
+        "hi-IN": "internal model governance बिना regulated deployments।",
+      },
+    ],
+    samples: [
+      { type: "text", title: "Open model eval task", value: "Summarize policy and generate implementation checklist." },
+    ],
+    integration: {
+      requiresApiKey: false,
+      sdkQuality: "medium",
+      selfHostDifficulty: "hard",
+    },
+    risk: {
+      safetyScore: 0.46,
+      misuseTags: ["open-model-misuse"],
+    },
+    compliance: {
+      license: "unknown",
+      commercialUse: "unknown",
+    },
+    provenance: {
+      source: "huggingface-trending",
+      sourceUrl: "https://huggingface.co/api/trending?type=model",
+      fetchedAt: isoDaysAgo(0),
+      lastVerifiedAt: isoDaysAgo(0),
+    },
+    published: true,
+    status: "verified",
+    createdAt: isoDaysAgo(1),
+    updatedAt: isoDaysAgo(0),
+  },
+  {
+    id: "hf-minimax-m2-5",
+    slug: "hf-minimax-m2-5",
+    name: "MiniMax M2.5 (HF Trending)",
+    summary: {
+      "en-IN": "Trending text-generation model on Hugging Face with growing community adoption.",
+      "hi-IN": "बढ़ती community adoption वाला Hugging Face का trending text-generation मॉडल।",
+    },
+    modality: ["text", "code"],
+    tags: ["huggingface", "minimax-m2.5", "text-generation", "open-model"],
+    capabilities: {
+      hfTrending: true,
+      supportsTextGeneration: true,
+      openWeights: true,
+    },
+    limitations: [
+      "Performance depends heavily on serving setup and prompt framework.",
+      "Commercial usage requires explicit model card license checks.",
+    ],
+    benchmarks: {
+      hfTrendingLikes: 903,
+      trendFreshnessDays: 8,
+      communityMomentum: 81.0,
+    },
+    pricingUsd: {
+      monthly: 0,
+    },
+    quickstart: [
+      {
+        "en-IN": "Compare against existing baseline model on your internal eval set before rollout.",
+        "hi-IN": "rollout से पहले अपने internal eval set पर baseline model से तुलना करें।",
+      },
+    ],
+    bestFor: [
+      {
+        "en-IN": "Teams validating alternative open-text stacks for experimentation.",
+        "hi-IN": "experimentation के लिए alternative open-text stacks validate करने वाली टीमें।",
+      },
+    ],
+    avoidWhen: [
+      {
+        "en-IN": "Production-critical paths without fallback model routing.",
+        "hi-IN": "fallback model routing बिना production-critical paths।",
+      },
+    ],
+    samples: [
+      { type: "text", title: "Prompt eval", value: "Draft technical design note with edge-case checklist." },
+    ],
+    integration: {
+      requiresApiKey: false,
+      sdkQuality: "medium",
+      selfHostDifficulty: "hard",
+    },
+    risk: {
+      safetyScore: 0.47,
+      misuseTags: ["open-model-misuse"],
+    },
+    compliance: {
+      license: "unknown",
+      commercialUse: "unknown",
+    },
+    provenance: {
+      source: "huggingface-trending",
+      sourceUrl: "https://huggingface.co/api/trending?type=model",
+      fetchedAt: isoDaysAgo(0),
+      lastVerifiedAt: isoDaysAgo(0),
+    },
+    published: true,
+    status: "verified",
+    createdAt: isoDaysAgo(1),
+    updatedAt: isoDaysAgo(0),
+  },
 ];
 
 export const seedReviews: Review[] = [
@@ -1637,6 +3180,138 @@ export const seedReviews: Review[] = [
     rating: 4,
     title: "Good retrieval quality",
     body: "Citation quality is solid when templates are constrained by intent and domain.",
+    locale: "en-IN",
+    createdAt: isoDaysAgo(0),
+    flagged: false,
+  },
+  {
+    id: "rev_8",
+    listingId: "openai-gpt-5-mini-openrouter",
+    userId: "user_demo_8",
+    rating: 5,
+    title: "Great price-performance",
+    body: "Strong for coding assistant traffic with clear budget controls.",
+    locale: "en-IN",
+    createdAt: isoDaysAgo(0),
+    flagged: false,
+  },
+  {
+    id: "rev_9",
+    listingId: "google-gemini-2-5-flash-openrouter",
+    userId: "user_demo_9",
+    rating: 4,
+    title: "Fast multimodal intake",
+    body: "Useful for mixed media understanding. We still route complex reasoning elsewhere.",
+    locale: "en-IN",
+    createdAt: isoDaysAgo(0),
+    flagged: false,
+  },
+  {
+    id: "rev_10",
+    listingId: "elevenlabs-flash-v2-5",
+    userId: "user_demo_10",
+    rating: 4,
+    title: "Low latency in calls",
+    body: "Turn speed is strong for support bots when streaming is tuned correctly.",
+    locale: "en-IN",
+    createdAt: isoDaysAgo(0),
+    flagged: false,
+  },
+  {
+    id: "rev_11",
+    listingId: "elevenlabs-scribe-v2",
+    userId: "user_demo_11",
+    rating: 4,
+    title: "Good multilingual transcript quality",
+    body: "Handles mixed Hindi-English calls well after light audio cleanup.",
+    locale: "en-IN",
+    createdAt: isoDaysAgo(0),
+    flagged: false,
+  },
+  {
+    id: "rev_12",
+    listingId: "openai-agents-sdk",
+    userId: "user_demo_12",
+    rating: 5,
+    title: "Reliable developer workflow",
+    body: "Tracing plus handoffs made multi-tool orchestration much easier to debug.",
+    locale: "en-IN",
+    createdAt: isoDaysAgo(0),
+    flagged: false,
+  },
+  {
+    id: "rev_13",
+    listingId: "google-agent-development-kit",
+    userId: "user_demo_13",
+    rating: 4,
+    title: "Good agent baseline",
+    body: "ADK is solid for Gemini-first agents, but we needed custom observability.",
+    locale: "en-IN",
+    createdAt: isoDaysAgo(0),
+    flagged: false,
+  },
+  {
+    id: "rev_14",
+    listingId: "hf-qwen3-tts-12hz-1-7b-customvoice",
+    userId: "user_demo_14",
+    rating: 3,
+    title: "Promising open voice model",
+    body: "Useful for prototyping; production setup needed substantial infra work.",
+    locale: "en-IN",
+    createdAt: isoDaysAgo(0),
+    flagged: false,
+  },
+  {
+    id: "rev_15",
+    listingId: "openai-gpt-5-openrouter",
+    userId: "user_demo_15",
+    rating: 5,
+    title: "Great for hard reasoning",
+    body: "We route only complex planning tasks here and it performs reliably.",
+    locale: "en-IN",
+    createdAt: isoDaysAgo(0),
+    flagged: false,
+  },
+  {
+    id: "rev_16",
+    listingId: "anthropic-claude-opus-4-1-openrouter",
+    userId: "user_demo_16",
+    rating: 4,
+    title: "High quality, costly",
+    body: "Excellent output quality but we gate usage due premium token pricing.",
+    locale: "en-IN",
+    createdAt: isoDaysAgo(0),
+    flagged: false,
+  },
+  {
+    id: "rev_17",
+    listingId: "google-gemini-2-5-pro-openrouter",
+    userId: "user_demo_17",
+    rating: 4,
+    title: "Strong multimodal reasoning",
+    body: "Handles long mixed-input workflows well when prompts are structured.",
+    locale: "en-IN",
+    createdAt: isoDaysAgo(0),
+    flagged: false,
+  },
+  {
+    id: "rev_18",
+    listingId: "hf-zai-glm-5",
+    userId: "user_demo_18",
+    rating: 4,
+    title: "Good open-model momentum",
+    body: "Promising results in experiments; still needs strict eval for production.",
+    locale: "en-IN",
+    createdAt: isoDaysAgo(0),
+    flagged: false,
+  },
+  {
+    id: "rev_19",
+    listingId: "hf-minimax-m2-5",
+    userId: "user_demo_19",
+    rating: 3,
+    title: "Decent alternative stack",
+    body: "Useful for comparative testing, but we need more internal reliability data.",
     locale: "en-IN",
     createdAt: isoDaysAgo(0),
     flagged: false,

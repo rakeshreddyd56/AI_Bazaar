@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { executeSearch } from "@/lib/search/search";
+import { compareListings, comparisonTable, executeSearch } from "@/lib/search/search";
 
 describe("executeSearch", () => {
   it("returns ranked video-capable options for video queries", () => {
@@ -25,5 +25,18 @@ describe("executeSearch", () => {
     expect(
       result.results.some((item) => item.capabilities.outputsValidSvg === true),
     ).toBe(true);
+  });
+
+  it("builds compare table with benchmark rows when data exists", () => {
+    const items = compareListings([
+      "openai-agents-sdk",
+      "google-agent-development-kit",
+      "langgraph-v1-framework",
+    ]);
+    const table = comparisonTable(items);
+    const metrics = table.rows.map((row) => row.metric);
+
+    expect(metrics).toContain("benchmarks.githubStars");
+    expect(metrics).toContain("benchmarks.githubForks");
   });
 });

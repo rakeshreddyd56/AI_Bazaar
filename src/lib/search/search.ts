@@ -101,36 +101,69 @@ export const compareListings = (ids: string[]) =>
     .filter((item): item is ComparisonItem => Boolean(item));
 
 export const comparisonTable = (items: ComparisonItem[]) => {
-  const metrics = [
-    "health.score",
-    "reviewsSummary.rating",
-    "capabilities.maxVideoDurationSec",
-    "capabilities.maxResolution",
-    "capabilities.contextTokens",
-    "capabilities.outputsValidSvg",
-    "capabilities.supportsImageToVideo",
-    "capabilities.voiceCloning",
-    "capabilities.toolCalling",
-    "benchmarks",
-  ] as const;
+  const topKeys = (
+    keyspace: "capabilities" | "benchmarks",
+    limit: number,
+  ) => {
+    const count = new Map<string, number>();
 
-  const rows = metrics.map((metric) => {
-    const values = items.map((item) => {
-      if (metric === "health.score") return item.health.score;
-      if (metric === "reviewsSummary.rating") return item.reviewsSummary.rating || "-";
-      if (metric === "benchmarks") return item.benchmarks;
-      if (metric.startsWith("capabilities.")) {
-        const key = metric.replace("capabilities.", "");
-        return item.capabilities[key] ?? "-";
+    for (const item of items) {
+      const source = keyspace === "capabilities" ? item.capabilities : item.benchmarks;
+      for (const key of Object.keys(source)) {
+        count.set(key, (count.get(key) ?? 0) + 1);
       }
-      return "-";
-    });
+    }
 
-    return {
-      metric,
-      values,
-    };
-  });
+    const common = [...count.entries()]
+      .filter(([, seen]) => seen >= 2)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, limit)
+      .map(([key]) => key);
+
+    if (common.length) return common;
+    return [...count.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, limit)
+      .map(([key]) => key);
+  };
+
+  const capabilityKeys = topKeys("capabilities", 8);
+  const benchmarkKeys = topKeys("benchmarks", 6);
+
+  const rows = [
+    {
+      metric: "health.score",
+      values: items.map((item) => item.health.score),
+    },
+    {
+      metric: "reviewsSummary.rating",
+      values: items.map((item) => item.reviewsSummary.rating || "-"),
+    },
+    {
+      metric: "pricing.inputPerM",
+      values: items.map((item) => item.pricingUsd?.inputPerM ?? "-"),
+    },
+    {
+      metric: "pricing.outputPerM",
+      values: items.map((item) => item.pricingUsd?.outputPerM ?? "-"),
+    },
+    {
+      metric: "pricing.monthly",
+      values: items.map((item) => item.pricingUsd?.monthly ?? "-"),
+    },
+    {
+      metric: "freshness.stale",
+      values: items.map((item) => item.stale),
+    },
+    ...capabilityKeys.map((key) => ({
+      metric: `capabilities.${key}`,
+      values: items.map((item) => item.capabilities[key] ?? "-"),
+    })),
+    ...benchmarkKeys.map((key) => ({
+      metric: `benchmarks.${key}`,
+      values: items.map((item) => item.benchmarks[key] ?? "-"),
+    })),
+  ];
 
   return {
     columns: items.map((item) => ({

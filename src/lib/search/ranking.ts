@@ -66,7 +66,7 @@ const personaWeights: Record<
 
 const capabilityScore = (listing: Listing, context: RankingContext) => {
   const hasIntent = listing.modality.includes(context.intent as never);
-  let score = hasIntent ? 75 : 30;
+  let score = hasIntent ? 78 : 8;
 
   const listingText = [listing.name, ...listing.tags, ...listing.limitations]
     .join(" ")
@@ -74,6 +74,75 @@ const capabilityScore = (listing: Listing, context: RankingContext) => {
 
   for (const token of context.tokens) {
     if (listingText.includes(token)) score += 1.8;
+  }
+
+  const wantsVoice = context.tokens.some((token) =>
+    ["voice", "tts", "speech", "audio"].includes(token),
+  );
+  const wantsAgent = context.tokens.some((token) =>
+    ["agent", "agents", "workflow", "orchestration", "autonomous"].includes(token),
+  );
+  const wantsFramework = context.tokens.some((token) =>
+    ["framework", "frameworks", "sdk", "platform"].includes(token),
+  );
+
+  if (wantsVoice) {
+    const voiceSignalKeys = [
+      "voiceCloning",
+      "textToSpeech",
+      "speechToText",
+      "audioToAudio",
+      "realtimeStreaming",
+      "latencyMsClaim",
+      "supportedLanguages",
+    ];
+
+    const hasVoiceSignals = voiceSignalKeys.some((key) => {
+      const value = listing.capabilities[key];
+      if (typeof value === "boolean") return value;
+      if (typeof value === "number") return value > 0;
+      return false;
+    });
+
+    score += hasVoiceSignals ? 18 : -12;
+  }
+
+  if (wantsAgent) {
+    const agentSignalKeys = [
+      "toolCalling",
+      "statefulExecution",
+      "multiAgentCoordination",
+      "agentHandoffs",
+      "workflowState",
+      "humanApprovalSteps",
+      "handoffs",
+    ];
+
+    const hasAgentSignals = agentSignalKeys.some((key) => {
+      const value = listing.capabilities[key];
+      if (typeof value === "boolean") return value;
+      if (typeof value === "number") return value > 0;
+      return false;
+    });
+
+    const agentTagBoost = listing.tags.some((tag) =>
+      ["agent", "agents", "workflow", "orchestration", "framework"].some((entry) =>
+        tag.includes(entry),
+      ),
+    )
+      ? 10
+      : 0;
+
+    score += hasAgentSignals ? 14 + agentTagBoost : -10;
+  }
+
+  if (wantsFramework) {
+    const hasFrameworkSignal = listing.tags.some((tag) =>
+      ["framework", "sdk", "workflow", "orchestration", "platform"].some((entry) =>
+        tag.includes(entry),
+      ),
+    );
+    score += hasFrameworkSignal ? 22 : -15;
   }
 
   for (const [key, value] of Object.entries(context.capabilityFilters)) {
