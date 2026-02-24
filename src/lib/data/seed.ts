@@ -896,6 +896,671 @@ export const seedListings: Listing[] = [
     createdAt: isoDaysAgo(18),
     updatedAt: isoDaysAgo(5),
   },
+  {
+    id: "openai-realtime-voice",
+    slug: "openai-realtime-voice",
+    name: "OpenAI Realtime Voice",
+    summary: {
+      "en-IN": "Low-latency bidirectional speech interface for voice agents and assistants.",
+      "hi-IN": "voice agents और assistants के लिए low-latency bidirectional speech interface।",
+    },
+    modality: ["audio", "agent", "text"],
+    tags: ["voice", "realtime", "agent", "speech-to-speech"],
+    capabilities: {
+      voiceCloning: false,
+      realtimeStreaming: true,
+      interruptionHandling: true,
+      multilingual: true,
+      avgTurnLatencyMs: 320,
+    },
+    limitations: [
+      "Requires careful turn-taking UX to avoid overlap artifacts.",
+      "Long calls need strict token/session budget controls.",
+    ],
+    benchmarks: {
+      latencyP95Ms: 520,
+      turnStability: 84.1,
+      multilingualQuality: 86.4,
+    },
+    pricingUsd: {
+      inputPerM: 4.5,
+      outputPerM: 13.5,
+    },
+    quickstart: [
+      {
+        "en-IN": "Start with push-to-talk mode before enabling full duplex.",
+        "hi-IN": "full duplex सक्षम करने से पहले push-to-talk mode से शुरू करें।",
+      },
+      {
+        "en-IN": "Add profanity/safety filters and call recording policy early.",
+        "hi-IN": "शुरुआत में profanity/safety filters और call recording policy जोड़ें।",
+      },
+    ],
+    bestFor: [
+      {
+        "en-IN": "Customer support copilots and voice-first product assistants.",
+        "hi-IN": "customer support copilots और voice-first product assistants।",
+      },
+    ],
+    avoidWhen: [
+      {
+        "en-IN": "Strict offline deployments with no cloud audio path.",
+        "hi-IN": "सख्त offline deployments जहां cloud audio path न हो।",
+      },
+    ],
+    samples: [{ type: "audio", title: "Support call flow", value: "Hindi-English mixed call assistant" }],
+    integration: {
+      requiresApiKey: true,
+      sdkQuality: "high",
+      selfHostDifficulty: "medium",
+    },
+    risk: {
+      safetyScore: 0.46,
+      misuseTags: ["impersonation", "social-engineering"],
+    },
+    compliance: {
+      license: "api-terms",
+      commercialUse: "allowed",
+    },
+    provenance: {
+      source: "manual+openrouter",
+      sourceUrl: "https://openrouter.ai/rankings",
+      fetchedAt: isoDaysAgo(1),
+      lastVerifiedAt: isoDaysAgo(1),
+    },
+    published: true,
+    status: "verified",
+    createdAt: isoDaysAgo(10),
+    updatedAt: isoDaysAgo(1),
+  },
+  {
+    id: "playht-3",
+    slug: "playht-3",
+    name: "PlayHT 3.0",
+    summary: {
+      "en-IN": "Commercial TTS/voice-cloning stack optimized for narration and creator workflows.",
+      "hi-IN": "narration और creator workflows के लिए optimized commercial TTS/voice-cloning stack।",
+    },
+    modality: ["audio", "text"],
+    tags: ["voice", "tts", "voice-cloning", "narration"],
+    capabilities: {
+      voiceCloning: true,
+      streaming: true,
+      supportedLanguages: 30,
+      emotionControl: true,
+      styleTransfer: true,
+    },
+    limitations: [
+      "Consent management and voice ownership checks are mandatory.",
+      "Fine voice style control varies by locale.",
+    ],
+    benchmarks: {
+      naturalness: 86.2,
+      cloningSimilarity: 83.8,
+      latencyP95Ms: 480,
+    },
+    pricingUsd: {
+      monthly: 39,
+    },
+    quickstart: [
+      {
+        "en-IN": "Create consent workflow before enabling cloning in production.",
+        "hi-IN": "production में cloning से पहले consent workflow बनाएं।",
+      },
+      {
+        "en-IN": "Use smaller chunk sizes for low-latency interactive playback.",
+        "hi-IN": "low-latency playback के लिए छोटे chunk sizes उपयोग करें।",
+      },
+    ],
+    bestFor: [
+      {
+        "en-IN": "Narration pipelines and creator tools with voice personalization.",
+        "hi-IN": "voice personalization वाले narration pipelines और creator tools।",
+      },
+    ],
+    avoidWhen: [
+      {
+        "en-IN": "Workflows without identity verification controls.",
+        "hi-IN": "ऐसे workflows जिनमें identity verification controls न हों।",
+      },
+    ],
+    samples: [{ type: "audio", title: "Podcast voice", value: "45s startup news summary" }],
+    integration: {
+      requiresApiKey: true,
+      sdkQuality: "medium",
+      selfHostDifficulty: "easy",
+    },
+    risk: {
+      safetyScore: 0.5,
+      misuseTags: ["voice-cloning", "impersonation"],
+    },
+    compliance: {
+      license: "commercial",
+      commercialUse: "allowed",
+    },
+    provenance: {
+      source: "manual",
+      sourceUrl: "https://arena.ai/leaderboard",
+      fetchedAt: isoDaysAgo(3),
+      lastVerifiedAt: isoDaysAgo(3),
+    },
+    published: true,
+    status: "verified",
+    createdAt: isoDaysAgo(14),
+    updatedAt: isoDaysAgo(3),
+  },
+  {
+    id: "cartesia-sonic",
+    slug: "cartesia-sonic",
+    name: "Cartesia Sonic",
+    summary: {
+      "en-IN": "Ultra-low latency TTS model designed for realtime conversational experiences.",
+      "hi-IN": "realtime conversational अनुभवों के लिए ultra-low latency TTS मॉडल।",
+    },
+    modality: ["audio", "agent"],
+    tags: ["voice", "tts", "realtime", "latency"],
+    capabilities: {
+      realtimeStreaming: true,
+      avgTurnLatencyMs: 180,
+      voiceCloning: false,
+      multilingual: true,
+    },
+    limitations: [
+      "Expressive long-form narration is weaker than studio-grade TTS stacks.",
+      "Best quality requires stable audio playback pipeline.",
+    ],
+    benchmarks: {
+      latencyP95Ms: 260,
+      conversationalNaturalness: 80.7,
+      bargeInRecovery: 85.2,
+    },
+    pricingUsd: {
+      inputPerM: 1.9,
+      outputPerM: 7.8,
+    },
+    quickstart: [
+      {
+        "en-IN": "Tune chunked streaming and jitter buffering for your target network.",
+        "hi-IN": "target network के अनुसार chunked streaming और jitter buffering ट्यून करें।",
+      },
+    ],
+    bestFor: [
+      {
+        "en-IN": "Realtime call assistants and interactive voice bots.",
+        "hi-IN": "realtime call assistants और interactive voice bots।",
+      },
+    ],
+    avoidWhen: [
+      {
+        "en-IN": "High-fidelity audiobook narration with broad style control.",
+        "hi-IN": "broad style control वाली high-fidelity audiobook narration।",
+      },
+    ],
+    samples: [{ type: "audio", title: "Call assistant", value: "Instant response travel booking bot" }],
+    integration: {
+      requiresApiKey: true,
+      sdkQuality: "medium",
+      selfHostDifficulty: "easy",
+    },
+    risk: {
+      safetyScore: 0.34,
+      misuseTags: ["social-engineering"],
+    },
+    compliance: {
+      license: "api-terms",
+      commercialUse: "allowed",
+    },
+    provenance: {
+      source: "manual",
+      sourceUrl: "https://openrouter.ai/rankings",
+      fetchedAt: isoDaysAgo(2),
+      lastVerifiedAt: isoDaysAgo(2),
+    },
+    published: true,
+    status: "verified",
+    createdAt: isoDaysAgo(9),
+    updatedAt: isoDaysAgo(2),
+  },
+  {
+    id: "langgraph-platform",
+    slug: "langgraph-platform",
+    name: "LangGraph Platform",
+    summary: {
+      "en-IN": "Stateful agent orchestration platform for multi-step workflows and human-in-loop control.",
+      "hi-IN": "multi-step workflows और human-in-loop control के लिए stateful agent orchestration platform।",
+    },
+    modality: ["agent", "code", "search"],
+    tags: ["agents", "orchestration", "workflow", "langchain"],
+    capabilities: {
+      statefulExecution: true,
+      humanApprovalSteps: true,
+      toolCalling: true,
+      retryPolicies: true,
+      longRunningJobs: true,
+    },
+    limitations: [
+      "Requires workflow design discipline; naive graphs become hard to debug.",
+      "Ops overhead grows with many concurrent agent sessions.",
+    ],
+    benchmarks: {
+      agentTaskCompletion: 82.4,
+      reliabilityUnderRetries: 86.8,
+      medianLatencySec: 6.2,
+    },
+    pricingUsd: {
+      monthly: 99,
+    },
+    quickstart: [
+      {
+        "en-IN": "Define explicit tool schemas and state transitions before production rollout.",
+        "hi-IN": "production rollout से पहले explicit tool schemas और state transitions परिभाषित करें।",
+      },
+      {
+        "en-IN": "Add human approval nodes for sensitive actions.",
+        "hi-IN": "sensitive actions के लिए human approval nodes जोड़ें।",
+      },
+    ],
+    bestFor: [
+      {
+        "en-IN": "Complex agent apps with branching state and audit trails.",
+        "hi-IN": "branching state और audit trails वाले complex agent apps।",
+      },
+    ],
+    avoidWhen: [
+      {
+        "en-IN": "Simple single-shot assistants with no workflow complexity.",
+        "hi-IN": "बिना workflow complexity वाले simple single-shot assistants।",
+      },
+    ],
+    samples: [{ type: "code", title: "Agent graph", value: "research -> verify -> draft -> approval -> publish" }],
+    integration: {
+      requiresApiKey: true,
+      sdkQuality: "high",
+      selfHostDifficulty: "medium",
+    },
+    risk: {
+      safetyScore: 0.33,
+      misuseTags: ["automation-abuse", "tool-misfire"],
+    },
+    compliance: {
+      license: "commercial",
+      commercialUse: "allowed",
+    },
+    provenance: {
+      source: "manual",
+      sourceUrl: "https://livebench.ai/",
+      fetchedAt: isoDaysAgo(2),
+      lastVerifiedAt: isoDaysAgo(2),
+    },
+    published: true,
+    status: "verified",
+    createdAt: isoDaysAgo(16),
+    updatedAt: isoDaysAgo(2),
+  },
+  {
+    id: "crewai-enterprise",
+    slug: "crewai-enterprise",
+    name: "CrewAI Enterprise",
+    summary: {
+      "en-IN": "Role-based multi-agent runtime for business workflows and ops automations.",
+      "hi-IN": "business workflows और ops automations के लिए role-based multi-agent runtime।",
+    },
+    modality: ["agent", "code", "search"],
+    tags: ["multi-agent", "enterprise", "automation", "workflow"],
+    capabilities: {
+      multiAgentCoordination: true,
+      rolePolicies: true,
+      toolCalling: true,
+      scheduler: true,
+      observability: true,
+    },
+    limitations: [
+      "Role prompting can drift without strict templates.",
+      "Needs robust sandboxing when agents execute external tools.",
+    ],
+    benchmarks: {
+      multiStepSuccess: 79.6,
+      toolUseAccuracy: 82.1,
+      operationalReliability: 84.0,
+    },
+    pricingUsd: {
+      monthly: 129,
+    },
+    quickstart: [
+      {
+        "en-IN": "Start with two-agent flows before scaling to large crews.",
+        "hi-IN": "बड़े crews तक जाने से पहले two-agent flows से शुरू करें।",
+      },
+      {
+        "en-IN": "Set hard tool allowlists and budget/time limits.",
+        "hi-IN": "hard tool allowlists और budget/time limits सेट करें।",
+      },
+    ],
+    bestFor: [
+      {
+        "en-IN": "Ops teams automating repetitive multi-step business tasks.",
+        "hi-IN": "दोहराए जाने वाले multi-step business tasks को automate करने वाली ops टीमें।",
+      },
+    ],
+    avoidWhen: [
+      {
+        "en-IN": "Highly regulated environments without mature approval controls.",
+        "hi-IN": "mature approval controls के बिना highly regulated environments।",
+      },
+    ],
+    samples: [{ type: "text", title: "Crew pipeline", value: "intake -> classify -> draft response -> QA" }],
+    integration: {
+      requiresApiKey: true,
+      sdkQuality: "medium",
+      selfHostDifficulty: "medium",
+    },
+    risk: {
+      safetyScore: 0.45,
+      misuseTags: ["privilege-escalation", "automation-abuse"],
+    },
+    compliance: {
+      license: "commercial",
+      commercialUse: "allowed",
+    },
+    provenance: {
+      source: "manual",
+      sourceUrl: "https://arena.ai/leaderboard",
+      fetchedAt: isoDaysAgo(3),
+      lastVerifiedAt: isoDaysAgo(3),
+    },
+    published: true,
+    status: "verified",
+    createdAt: isoDaysAgo(20),
+    updatedAt: isoDaysAgo(3),
+  },
+  {
+    id: "autogen-studio",
+    slug: "autogen-studio",
+    name: "AutoGen Studio",
+    summary: {
+      "en-IN": "Developer-focused multi-agent experimentation and evaluation environment.",
+      "hi-IN": "developer-focused multi-agent experimentation और evaluation environment।",
+    },
+    modality: ["agent", "code", "text"],
+    tags: ["autogen", "multi-agent", "experimentation", "evals"],
+    capabilities: {
+      multiAgentCoordination: true,
+      simulationRuns: true,
+      toolCalling: true,
+      transcriptTracing: true,
+    },
+    limitations: [
+      "Primarily suited for engineering teams; steeper learning curve for non-technical users.",
+      "Production hardening requires extra infra and controls.",
+    ],
+    benchmarks: {
+      agentIterationSpeed: 88.0,
+      reproducibility: 79.2,
+      toolUseAccuracy: 77.4,
+    },
+    pricingUsd: {
+      monthly: 0,
+    },
+    quickstart: [
+      {
+        "en-IN": "Run controlled test scenarios before connecting external systems.",
+        "hi-IN": "external systems जोड़ने से पहले controlled test scenarios चलाएं।",
+      },
+    ],
+    bestFor: [
+      {
+        "en-IN": "R&D teams evaluating new agent architectures.",
+        "hi-IN": "नई agent architectures का मूल्यांकन करने वाली R&D टीमें।",
+      },
+    ],
+    avoidWhen: [
+      {
+        "en-IN": "Teams seeking fully managed no-code agent deployments.",
+        "hi-IN": "fully managed no-code agent deployments चाहने वाली टीमें।",
+      },
+    ],
+    samples: [{ type: "code", title: "Agent testbed", value: "planner + coder + reviewer iterative loop" }],
+    integration: {
+      requiresApiKey: false,
+      sdkQuality: "medium",
+      selfHostDifficulty: "medium",
+    },
+    risk: {
+      safetyScore: 0.29,
+      misuseTags: ["unsafe-tooling"],
+    },
+    compliance: {
+      license: "mit",
+      commercialUse: "allowed",
+    },
+    provenance: {
+      source: "manual",
+      sourceUrl: "https://github.com/LiveBench/LiveBench",
+      fetchedAt: isoDaysAgo(6),
+      lastVerifiedAt: isoDaysAgo(6),
+    },
+    published: true,
+    status: "verified",
+    createdAt: isoDaysAgo(32),
+    updatedAt: isoDaysAgo(6),
+  },
+  {
+    id: "pika-2-2",
+    slug: "pika-2-2",
+    name: "Pika 2.2",
+    summary: {
+      "en-IN": "Consumer-friendly text/image-to-video generator focused on short social clips.",
+      "hi-IN": "short social clips के लिए consumer-friendly text/image-to-video generator।",
+    },
+    modality: ["video", "image"],
+    tags: ["video", "social", "short-form"],
+    capabilities: {
+      maxVideoDurationSec: 10,
+      maxResolution: "1080p",
+      supportsImageToVideo: true,
+      styleTemplates: true,
+    },
+    limitations: [
+      "Lower control for complex camera choreography.",
+      "Consistency may vary across multiple reruns.",
+    ],
+    benchmarks: {
+      qualityElo: 79.4,
+      promptFaithfulness: 77.8,
+      temporalConsistency: 74.9,
+    },
+    pricingUsd: {
+      monthly: 24,
+    },
+    quickstart: [
+      {
+        "en-IN": "Use one-shot prompts and reference frames for stronger consistency.",
+        "hi-IN": "बेहतर consistency के लिए one-shot prompts और reference frames उपयोग करें।",
+      },
+    ],
+    bestFor: [
+      {
+        "en-IN": "Social marketing teams creating quick campaign variants.",
+        "hi-IN": "तेजी से campaign variants बनाने वाली social marketing टीमें।",
+      },
+    ],
+    avoidWhen: [
+      {
+        "en-IN": "Long-form cinematic sequences with strict scene continuity.",
+        "hi-IN": "strict scene continuity वाली long-form cinematic sequences।",
+      },
+    ],
+    samples: [{ type: "video", title: "Social clip", value: "8s product teaser with dynamic motion" }],
+    integration: {
+      requiresApiKey: true,
+      sdkQuality: "medium",
+      selfHostDifficulty: "hard",
+    },
+    risk: {
+      safetyScore: 0.42,
+      misuseTags: ["deepfake"],
+    },
+    compliance: {
+      license: "proprietary",
+      commercialUse: "allowed",
+    },
+    provenance: {
+      source: "manual+rankings",
+      sourceUrl: "https://openrouter.ai/rankings",
+      fetchedAt: isoDaysAgo(4),
+      lastVerifiedAt: isoDaysAgo(4),
+    },
+    published: true,
+    status: "verified",
+    createdAt: isoDaysAgo(25),
+    updatedAt: isoDaysAgo(4),
+  },
+  {
+    id: "ideogram-3",
+    slug: "ideogram-3",
+    name: "Ideogram 3",
+    summary: {
+      "en-IN": "Image model with strong text rendering and poster/logo style generation.",
+      "hi-IN": "मजबूत text rendering और poster/logo generation वाला image मॉडल।",
+    },
+    modality: ["image", "text"],
+    tags: ["image", "design", "text-in-image", "logo"],
+    capabilities: {
+      maxResolution: "2048x2048",
+      typographyAccuracy: 90,
+      supportsInpainting: true,
+      brandStylePreset: true,
+    },
+    limitations: [
+      "Brand-safe trademark handling still requires legal review.",
+      "Fine geometric vector control is limited compared to SVG-native tools.",
+    ],
+    benchmarks: {
+      imageElo: 85.9,
+      textInImage: 90.3,
+      styleConsistency: 83.5,
+    },
+    pricingUsd: {
+      monthly: 30,
+    },
+    quickstart: [
+      {
+        "en-IN": "Include explicit font, hierarchy, and spacing instructions in prompt.",
+        "hi-IN": "prompt में font, hierarchy और spacing निर्देश स्पष्ट दें।",
+      },
+    ],
+    bestFor: [
+      {
+        "en-IN": "Poster drafts, social graphics, and text-heavy visuals.",
+        "hi-IN": "poster drafts, social graphics और text-heavy visuals।",
+      },
+    ],
+    avoidWhen: [
+      {
+        "en-IN": "Production-ready vector icon systems with strict editability.",
+        "hi-IN": "strict editability वाले production-ready vector icon systems।",
+      },
+    ],
+    samples: [{ type: "image", title: "Poster draft", value: "AI meetup poster with dual-language headline" }],
+    integration: {
+      requiresApiKey: true,
+      sdkQuality: "medium",
+      selfHostDifficulty: "hard",
+    },
+    risk: {
+      safetyScore: 0.37,
+      misuseTags: ["copyright", "brand-imitation"],
+    },
+    compliance: {
+      license: "commercial",
+      commercialUse: "allowed",
+    },
+    provenance: {
+      source: "manual",
+      sourceUrl: "https://huggingface.co/api/trending?type=model",
+      fetchedAt: isoDaysAgo(3),
+      lastVerifiedAt: isoDaysAgo(3),
+    },
+    published: true,
+    status: "verified",
+    createdAt: isoDaysAgo(19),
+    updatedAt: isoDaysAgo(3),
+  },
+  {
+    id: "exa-search-api",
+    slug: "exa-search-api",
+    name: "Exa Search API",
+    summary: {
+      "en-IN": "Web-scale retrieval API designed for AI-first search and research workflows.",
+      "hi-IN": "AI-first search और research workflows के लिए web-scale retrieval API।",
+    },
+    modality: ["search", "agent", "text"],
+    tags: ["search", "retrieval", "rag", "research"],
+    capabilities: {
+      webSearch: true,
+      semanticRetrieval: true,
+      freshnessWindowHours: 12,
+      citationSupport: true,
+    },
+    limitations: [
+      "Broad discovery queries can become expensive without caching.",
+      "Requires good ranking prompts to reduce citation noise.",
+    ],
+    benchmarks: {
+      retrievalPrecision: 85.1,
+      citationCoverage: 84.9,
+      latencyP95Ms: 980,
+    },
+    pricingUsd: {
+      monthly: 59,
+    },
+    quickstart: [
+      {
+        "en-IN": "Use domain constraints and query templates for stable precision.",
+        "hi-IN": "स्थिर precision के लिए domain constraints और query templates उपयोग करें।",
+      },
+      {
+        "en-IN": "Cache high-frequency prompts and citations.",
+        "hi-IN": "high-frequency prompts और citations को cache करें।",
+      },
+    ],
+    bestFor: [
+      {
+        "en-IN": "Research copilots and citation-grounded assistant responses.",
+        "hi-IN": "research copilots और citation-grounded assistant responses।",
+      },
+    ],
+    avoidWhen: [
+      {
+        "en-IN": "Strictly closed-network workloads.",
+        "hi-IN": "strictly closed-network workloads।",
+      },
+    ],
+    samples: [{ type: "text", title: "RAG citation pack", value: "Top 8 benchmark sources for coding agents" }],
+    integration: {
+      requiresApiKey: true,
+      sdkQuality: "high",
+      selfHostDifficulty: "easy",
+    },
+    risk: {
+      safetyScore: 0.28,
+      misuseTags: ["source-poisoning"],
+    },
+    compliance: {
+      license: "commercial",
+      commercialUse: "allowed",
+    },
+    provenance: {
+      source: "manual",
+      sourceUrl: "https://livebench.ai/",
+      fetchedAt: isoDaysAgo(1),
+      lastVerifiedAt: isoDaysAgo(1),
+    },
+    published: true,
+    status: "verified",
+    createdAt: isoDaysAgo(11),
+    updatedAt: isoDaysAgo(1),
+  },
 ];
 
 export const seedReviews: Review[] = [
@@ -930,6 +1595,50 @@ export const seedReviews: Review[] = [
     body: "Good layered output; we still run optimization before production deploy.",
     locale: "en-IN",
     createdAt: isoDaysAgo(2),
+    flagged: false,
+  },
+  {
+    id: "rev_4",
+    listingId: "langgraph-platform",
+    userId: "user_demo_4",
+    rating: 5,
+    title: "Strong orchestration control",
+    body: "State + approval nodes made our agent workflows much safer to ship.",
+    locale: "en-IN",
+    createdAt: isoDaysAgo(1),
+    flagged: false,
+  },
+  {
+    id: "rev_5",
+    listingId: "openai-realtime-voice",
+    userId: "user_demo_5",
+    rating: 4,
+    title: "Low latency voice turns",
+    body: "Very responsive in support calls. We had to tune interruptions carefully.",
+    locale: "en-IN",
+    createdAt: isoDaysAgo(1),
+    flagged: false,
+  },
+  {
+    id: "rev_6",
+    listingId: "cartesia-sonic",
+    userId: "user_demo_6",
+    rating: 4,
+    title: "Fast realtime audio",
+    body: "Excellent for interactive voice bot flows, not ideal for long narration quality.",
+    locale: "en-IN",
+    createdAt: isoDaysAgo(0),
+    flagged: false,
+  },
+  {
+    id: "rev_7",
+    listingId: "exa-search-api",
+    userId: "user_demo_7",
+    rating: 4,
+    title: "Good retrieval quality",
+    body: "Citation quality is solid when templates are constrained by intent and domain.",
+    locale: "en-IN",
+    createdAt: isoDaysAgo(0),
     flagged: false,
   },
 ];
