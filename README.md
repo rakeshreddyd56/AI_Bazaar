@@ -40,6 +40,9 @@ npm run build
 Create `.env.local` as needed:
 
 ```bash
+# Optional: canonical/public app URL for metadata and sharing links
+NEXT_PUBLIC_SITE_URL=https://theaibazaar.com
+
 # Optional: enables Artificial Analysis ingest endpoint
 ARTIFICIAL_ANALYSIS_API_KEY=
 
