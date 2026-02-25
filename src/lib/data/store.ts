@@ -1,3 +1,6 @@
+import { providerFromListing } from "@/lib/branding";
+import { inferCategoryForListing, inferSecondaryCategories } from "@/lib/data/catalogue";
+import { riskFlagForListing } from "@/lib/risk/flags";
 import { seedListings, seedReviews } from "@/lib/data/seed";
 import type { Listing, Review, Submission } from "@/lib/types";
 import { average, id, nowIso, normalize } from "@/lib/utils";
@@ -166,6 +169,10 @@ export const upsertListings = (
         license: "unknown",
         commercialUse: "unknown",
       },
+      categoryPrimary: partial.categoryPrimary,
+      categorySecondary: partial.categorySecondary,
+      provider: partial.provider,
+      riskFlag: partial.riskFlag,
       provenance: partial.provenance ?? {
         source: "ingest",
         sourceUrl: "",
@@ -179,6 +186,18 @@ export const upsertListings = (
 
     current.listings.unshift(created);
     changed += 1;
+  }
+
+  for (const listing of current.listings) {
+    const primary =
+      listing.categoryPrimary && listing.categoryPrimary !== "all"
+        ? listing.categoryPrimary
+        : inferCategoryForListing(listing);
+    listing.categoryPrimary = primary;
+    listing.categorySecondary =
+      listing.categorySecondary ?? inferSecondaryCategories(primary, listing);
+    listing.provider = listing.provider ?? providerFromListing(listing);
+    listing.riskFlag = listing.riskFlag ?? riskFlagForListing(listing);
   }
 
   return changed;

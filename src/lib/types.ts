@@ -1,4 +1,4 @@
-export type Persona = "builder" | "business" | "research";
+import type { CategorySlug } from "@/lib/categories";
 
 export type Intent =
   | "text"
@@ -9,6 +9,7 @@ export type Intent =
   | "agent"
   | "search";
 
+export type RiskLevel = "watchlist" | "high";
 export type HealthLevel = "low" | "medium" | "high";
 
 export type LocalizedString = {
@@ -16,11 +17,22 @@ export type LocalizedString = {
   "hi-IN": string;
 };
 
+export interface ProviderInfo {
+  key: string;
+  name: string;
+  logoPath: string;
+}
+
+export interface RiskFlag {
+  level: RiskLevel;
+  reasons: string[];
+}
+
 export interface SearchRequest {
   q: string;
-  persona?: Persona;
   locale?: "en-IN" | "hi-IN";
   intent?: Intent;
+  category?: CategorySlug;
 }
 
 export interface ComparisonItem {
@@ -36,11 +48,10 @@ export interface ComparisonItem {
     monthly?: number;
   };
   benchmarks: Record<string, number>;
-  health: {
-    level: HealthLevel;
-    score: number;
-    reasons: string[];
-  };
+  provider: ProviderInfo;
+  categoryPrimary: CategorySlug;
+  categorySecondary: CategorySlug[];
+  riskFlag?: RiskFlag;
   reviewsSummary: {
     count: number;
     rating: number;
@@ -87,6 +98,10 @@ export interface Listing {
     license: string;
     commercialUse: "allowed" | "restricted" | "unknown";
   };
+  categoryPrimary?: CategorySlug;
+  categorySecondary?: CategorySlug[];
+  provider?: ProviderInfo;
+  riskFlag?: RiskFlag;
   provenance: {
     source: string;
     sourceUrl: string;
@@ -153,7 +168,5 @@ export interface LocaleDictionary {
   avoidWhen: string;
   reviews: string;
   noResults: string;
-  builder: string;
-  business: string;
-  research: string;
+  categories: string;
 }

@@ -5,7 +5,7 @@ describe("executeSearch", () => {
   it("returns ranked video-capable options for video queries", () => {
     const result = executeSearch({
       q: "best video gen tools",
-      persona: "builder",
+      category: "video-generation",
       locale: "en-IN",
     });
 
@@ -17,7 +17,7 @@ describe("executeSearch", () => {
   it("returns svg-capable options for svg queries", () => {
     const result = executeSearch({
       q: "best SVG generation tools/models",
-      persona: "builder",
+      category: "svg-vector-brand-design",
       locale: "en-IN",
     });
 

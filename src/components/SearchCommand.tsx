@@ -1,20 +1,20 @@
-import type { Persona } from "@/lib/types";
+import type { CategorySlug } from "@/lib/categories";
 
 type Props = {
   defaultQuery?: string;
   placeholder: string;
   locale: "en-IN" | "hi-IN";
-  persona: Persona;
+  category: CategorySlug;
 };
 
-export function SearchCommand({ defaultQuery, placeholder, locale, persona }: Props) {
+export function SearchCommand({ defaultQuery, placeholder, locale, category }: Props) {
   return (
     <form
       action="/results"
       className="w-full rounded-3xl border border-white/20 bg-white/90 p-3 shadow-2xl shadow-amber-900/20 backdrop-blur"
     >
       <input type="hidden" name="locale" value={locale} />
-      <input type="hidden" name="persona" value={persona} />
+      <input type="hidden" name="category" value={category} />
 
       <div className="flex flex-col gap-2 md:flex-row md:items-center">
         <div className="flex-1">

@@ -32,12 +32,27 @@ export const metadata: Metadata = {
     siteName: "AI Bazaar",
     locale: "en_IN",
     type: "website",
+    images: [
+      {
+        url: "/brand/aibazaar-logo.png",
+        alt: "AI Bazaar",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "AI Bazaar",
     description:
       "India-first AI discovery marketplace for models, tools, benchmarks, and safe adoption guidance.",
+    images: ["/brand/aibazaar-logo.png"],
+  },
+  icons: {
+    icon: [
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-48x48.png", sizes: "48x48", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
   },
 };
 

@@ -1,14 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BrandLogo } from "@/components/BrandLogo";
-import { resolveBrand } from "@/lib/branding";
 import { LocaleSwitch } from "@/components/LocaleSwitch";
 import { listingDetail } from "@/lib/data/listing-view";
 import { dictionaryFor, resolveLocale } from "@/lib/i18n";
 
-const levelClass = {
-  low: "bg-emerald-100 text-emerald-800",
-  medium: "bg-amber-100 text-amber-800",
+const riskClass = {
+  watchlist: "bg-amber-100 text-amber-800",
   high: "bg-rose-100 text-rose-800",
 } as const;
 
@@ -30,21 +28,13 @@ export default async function ListingPage({
 
   const dict = dictionaryFor(locale);
   const verifiedDate = detail.provenance.lastVerifiedAt ?? detail.updatedAt;
-  const brand = resolveBrand({
-    id: detail.id,
-    slug: detail.slug,
-    name: detail.name,
-    source: detail.provenance.source,
-    sourceUrl: detail.provenance.sourceUrl,
-    tags: detail.tags,
-  });
 
   return (
     <div className="min-h-screen bg-neutral-50">
       <div className="mx-auto max-w-5xl px-5 py-8 md:px-8">
         <header className="mb-3 flex items-center justify-between gap-3">
           <Link
-            href={`/results?locale=${locale}`}
+            href={`/results?locale=${locale}&category=${detail.categoryPrimary ?? "all"}`}
             className="text-xs font-medium text-neutral-500 hover:underline"
           >
             ← Back to results
@@ -63,6 +53,7 @@ export default async function ListingPage({
                   source: detail.provenance.source,
                   sourceUrl: detail.provenance.sourceUrl,
                   tags: detail.tags,
+                  providerKey: detail.provider?.key,
                 }}
                 size="lg"
               />
@@ -71,10 +62,13 @@ export default async function ListingPage({
                 <p className="mt-1 text-sm text-neutral-600">{detail.summaryText}</p>
                 <div className="mt-2 flex flex-wrap gap-2 text-[11px]">
                   <span className="rounded-full border border-neutral-300 px-2 py-0.5 text-neutral-700">
-                    Provider: {brand.label}
+                    Provider: {detail.provider?.name ?? "Unknown Provider"}
                   </span>
                   <span className="rounded-full border border-neutral-300 px-2 py-0.5 text-neutral-700">
                     {detail.status}
+                  </span>
+                  <span className="rounded-full border border-neutral-300 px-2 py-0.5 text-neutral-700">
+                    Category: {detail.categoryPrimary ?? "uncategorized"}
                   </span>
                   <span
                     className={`rounded-full px-2 py-0.5 ${
@@ -91,11 +85,13 @@ export default async function ListingPage({
                 </div>
               </div>
             </div>
-            <span
-              className={`rounded-full px-3 py-1 text-xs font-semibold ${levelClass[detail.health.level]}`}
-            >
-              Health {detail.health.level} ({detail.health.score})
-            </span>
+            {detail.riskFlag ? (
+              <span
+                className={`rounded-full px-3 py-1 text-xs font-semibold ${riskClass[detail.riskFlag.level]}`}
+              >
+                Risk: {detail.riskFlag.level}
+              </span>
+            ) : null}
           </div>
 
           <div className="grid gap-4 md:grid-cols-3">
@@ -145,19 +141,27 @@ export default async function ListingPage({
             </section>
 
             <section className="rounded-2xl border border-neutral-200 p-4">
-              <h2 className="mb-2 text-sm font-semibold text-neutral-900">Health Meter</h2>
+              <h2 className="mb-2 text-sm font-semibold text-neutral-900">Usage notes</h2>
               <ul className="space-y-1 text-xs text-neutral-700">
-                <li>• Setup complexity: {detail.health.dimensions.setup}</li>
-                <li>• Safety & misuse risk: {detail.health.dimensions.safety}</li>
-                <li>• License/compliance risk: {detail.health.dimensions.compliance}</li>
+                <li>• Validate model behavior on your own benchmark slices before rollout.</li>
+                <li>• Pin version/provider routes for reproducible outputs.</li>
+                <li>• Add logging + fallback routes for high-volume workloads.</li>
               </ul>
-              <div className="mt-3 space-y-1 text-xs text-neutral-700">
-                {detail.health.reasons.map((reason) => (
-                  <p key={reason}>• {reason}</p>
-                ))}
-              </div>
             </section>
           </div>
+
+          {detail.riskFlag ? (
+            <section className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-4">
+              <h2 className="mb-2 text-sm font-semibold text-amber-900">
+                Why this listing is risk-flagged
+              </h2>
+              <ul className="space-y-1 text-xs text-amber-800">
+                {detail.riskFlag.reasons.map((reason) => (
+                  <li key={reason}>• {reason}</li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
 
           <section className="mt-4 rounded-2xl border border-neutral-200 p-4">
             <h2 className="mb-2 text-sm font-semibold text-neutral-900">Capabilities</h2>

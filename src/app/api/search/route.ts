@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
+import { isCategorySlug } from "@/lib/categories";
 import { executeSearch } from "@/lib/search/search";
 import { logEvent } from "@/lib/observability/events";
-import type { Intent, Persona } from "@/lib/types";
+import type { Intent } from "@/lib/types";
 
-const isPersona = (value: string): value is Persona =>
-  value === "builder" || value === "business" || value === "research";
 const isIntent = (value: string): value is Intent =>
   value === "text" ||
   value === "image" ||
@@ -25,23 +24,28 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const personaParam = request.nextUrl.searchParams.get("persona") ?? "builder";
-  const persona = isPersona(personaParam) ? personaParam : "builder";
+  // Backward compatibility for older links.
+  const _persona = request.nextUrl.searchParams.get("persona") ?? undefined;
   const locale = request.nextUrl.searchParams.get("locale") ?? "en-IN";
   const intentParam = request.nextUrl.searchParams.get("intent");
   const intent = intentParam && isIntent(intentParam) ? intentParam : undefined;
 
+  const categoryParam = request.nextUrl.searchParams.get("category");
+  const category =
+    categoryParam && isCategorySlug(categoryParam) ? categoryParam : "all";
+
   const result = executeSearch({
     q,
-    persona,
+    category,
     locale: locale === "hi-IN" ? "hi-IN" : "en-IN",
     intent,
   });
 
   logEvent("api.search", {
     q,
-    persona,
     locale,
+    category,
+    legacy_persona: _persona,
     intent: result.intent,
     result_count: result.results.length,
     confidence: result.confidence,

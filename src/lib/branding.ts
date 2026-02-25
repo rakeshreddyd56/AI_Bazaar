@@ -1,3 +1,5 @@
+import type { Listing, ProviderInfo } from "@/lib/types";
+
 export type BrandTarget = {
   id?: string;
   slug?: string;
@@ -5,19 +7,16 @@ export type BrandTarget = {
   source?: string;
   sourceUrl?: string;
   tags?: string[];
+  providerKey?: string;
 };
 
-export type BrandInfo = {
-  key: string;
-  label: string;
+export type BrandInfo = ProviderInfo & {
   monogram: string;
   domain?: string;
 };
 
 type BrandRule = {
   key: string;
-  label: string;
-  domain: string;
   tokens: string[];
 };
 
@@ -50,185 +49,70 @@ const parseDomain = (value?: string) => {
   }
 };
 
+const customProviderNames: Record<string, string> = {
+  "d-id": "D-ID",
+  aiva: "AIVA",
+  n8n: "n8n",
+  openai: "OpenAI",
+  anthropic: "Anthropic",
+  google: "Google",
+  meta: "Meta",
+  xai: "xAI",
+  qwen: "Qwen",
+  zhipu: "Zhipu AI",
+  elevenlabs: "ElevenLabs",
+  openrouter: "OpenRouter",
+  huggingface: "Hugging Face",
+  bedrock: "AWS Bedrock",
+  azure: "Azure",
+  vertex: "Google Vertex",
+  builderio: "Builder.io",
+  deepseek: "DeepSeek",
+  revai: "Rev AI",
+  langgraph: "LangGraph",
+  langchain: "LangChain",
+  llamaindex: "LlamaIndex",
+  swebench: "SWE-bench",
+  livebench: "LiveBench",
+  promptfoo: "Promptfoo",
+};
+
 const rules: BrandRule[] = [
-  {
-    key: "openai",
-    label: "OpenAI",
-    domain: "openai.com",
-    tokens: ["openai", "gpt-", "o1", "o3", "o4", "whisper"],
-  },
-  {
-    key: "anthropic",
-    label: "Anthropic",
-    domain: "anthropic.com",
-    tokens: ["anthropic", "claude", "opus", "sonnet", "haiku"],
-  },
-  {
-    key: "google",
-    label: "Google",
-    domain: "google.com",
-    tokens: ["google", "gemini", "vertex", "palm"],
-  },
-  {
-    key: "meta",
-    label: "Meta",
-    domain: "meta.com",
-    tokens: ["meta", "llama ", "llama-", "llama3", "llama 3", "llama 4"],
-  },
-  {
-    key: "mistral",
-    label: "Mistral",
-    domain: "mistral.ai",
-    tokens: ["mistral", "mixtral"],
-  },
-  {
-    key: "deepseek",
-    label: "DeepSeek",
-    domain: "deepseek.com",
-    tokens: ["deepseek"],
-  },
-  {
-    key: "xai",
-    label: "xAI",
-    domain: "x.ai",
-    tokens: ["xai", "grok"],
-  },
-  {
-    key: "cohere",
-    label: "Cohere",
-    domain: "cohere.com",
-    tokens: ["cohere", "command-r", "command r"],
-  },
-  {
-    key: "qwen",
-    label: "Qwen",
-    domain: "tongyi.aliyun.com",
-    tokens: ["qwen", "tongyi", "alibaba"],
-  },
-  {
-    key: "zhipu",
-    label: "Zhipu AI",
-    domain: "zhipuai.cn",
-    tokens: ["zhipu", "glm", "chatglm"],
-  },
-  {
-    key: "minimax",
-    label: "MiniMax",
-    domain: "minimax.io",
-    tokens: ["minimax"],
-  },
-  {
-    key: "nvidia",
-    label: "NVIDIA",
-    domain: "nvidia.com",
-    tokens: ["nvidia"],
-  },
-  {
-    key: "elevenlabs",
-    label: "ElevenLabs",
-    domain: "elevenlabs.io",
-    tokens: ["elevenlabs", "tts", "voice-v2"],
-  },
-  {
-    key: "runway",
-    label: "Runway",
-    domain: "runwayml.com",
-    tokens: ["runway"],
-  },
-  {
-    key: "pika",
-    label: "Pika",
-    domain: "pika.art",
-    tokens: ["pika"],
-  },
-  {
-    key: "luma",
-    label: "Luma",
-    domain: "lumalabs.ai",
-    tokens: ["luma", "dream machine"],
-  },
-  {
-    key: "midjourney",
-    label: "Midjourney",
-    domain: "midjourney.com",
-    tokens: ["midjourney"],
-  },
-  {
-    key: "stability",
-    label: "Stability AI",
-    domain: "stability.ai",
-    tokens: ["stability", "stable diffusion", "sdxl"],
-  },
-  {
-    key: "replicate",
-    label: "Replicate",
-    domain: "replicate.com",
-    tokens: ["replicate"],
-  },
-  {
-    key: "langgraph",
-    label: "LangGraph",
-    domain: "langchain.com",
-    tokens: ["langgraph"],
-  },
-  {
-    key: "langchain",
-    label: "LangChain",
-    domain: "langchain.com",
-    tokens: ["langchain"],
-  },
-  {
-    key: "llamaindex",
-    label: "LlamaIndex",
-    domain: "llamaindex.ai",
-    tokens: ["llamaindex"],
-  },
-  {
-    key: "openrouter",
-    label: "OpenRouter",
-    domain: "openrouter.ai",
-    tokens: ["openrouter"],
-  },
-  {
-    key: "huggingface",
-    label: "Hugging Face",
-    domain: "huggingface.co",
-    tokens: ["huggingface", "hf-", "hf "],
-  },
-  {
-    key: "swebench",
-    label: "SWE-bench",
-    domain: "swebench.com",
-    tokens: ["swe-bench", "swebench"],
-  },
-  {
-    key: "livebench",
-    label: "LiveBench",
-    domain: "livebench.ai",
-    tokens: ["livebench"],
-  },
-  {
-    key: "arena",
-    label: "Arena",
-    domain: "arena.ai",
-    tokens: ["arena.ai", "lm arena", "lmarena"],
-  },
-  {
-    key: "helm",
-    label: "HELM",
-    domain: "crfm.stanford.edu",
-    tokens: ["helm"],
-  },
-  {
-    key: "artificialanalysis",
-    label: "Artificial Analysis",
-    domain: "artificialanalysis.ai",
-    tokens: ["artificial analysis", "artificialanalysis"],
-  },
+  { key: "openai", tokens: ["openai", "gpt", "o1", "o3", "o4", "whisper", "codex"] },
+  { key: "anthropic", tokens: ["anthropic", "claude", "opus", "sonnet", "haiku"] },
+  { key: "google", tokens: ["google", "gemini", "vertex", "veo", "imagen", "chirp"] },
+  { key: "meta", tokens: ["meta", "llama", "audiocraft"] },
+  { key: "mistral", tokens: ["mistral", "mixtral", "codestral", "devstral"] },
+  { key: "deepseek", tokens: ["deepseek"] },
+  { key: "xai", tokens: ["xai", "grok"] },
+  { key: "cohere", tokens: ["cohere", "command-r", "command r"] },
+  { key: "qwen", tokens: ["qwen", "tongyi", "alibaba"] },
+  { key: "zhipu", tokens: ["zhipu", "glm", "chatglm"] },
+  { key: "minimax", tokens: ["minimax", "hailuo"] },
+  { key: "nvidia", tokens: ["nvidia", "nemotron", "riva"] },
+  { key: "elevenlabs", tokens: ["elevenlabs"] },
+  { key: "runway", tokens: ["runway"] },
+  { key: "pika", tokens: ["pika"] },
+  { key: "luma", tokens: ["luma", "dream machine"] },
+  { key: "midjourney", tokens: ["midjourney"] },
+  { key: "stability", tokens: ["stability", "stable diffusion", "sdxl"] },
+  { key: "replicate", tokens: ["replicate"] },
+  { key: "langgraph", tokens: ["langgraph"] },
+  { key: "langchain", tokens: ["langchain", "langsmith"] },
+  { key: "llamaindex", tokens: ["llamaindex"] },
+  { key: "openrouter", tokens: ["openrouter"] },
+  { key: "huggingface", tokens: ["huggingface", "hf-"] },
+  { key: "swebench", tokens: ["swe-bench", "swebench"] },
+  { key: "livebench", tokens: ["livebench"] },
+  { key: "arena", tokens: ["arena.ai", "lm arena", "lmarena"] },
+  { key: "helm", tokens: ["helm"] },
+  { key: "artificialanalysis", tokens: ["artificial analysis", "artificialanalysis"] },
+  { key: "openclaw", tokens: ["openclaw"] },
 ];
 
 const signatureOf = (target: BrandTarget) =>
   [
+    target.providerKey,
     target.id,
     target.slug,
     target.name,
@@ -240,45 +124,102 @@ const signatureOf = (target: BrandTarget) =>
     .join(" ")
     .toLowerCase();
 
+const keyFromDomain = (domain?: string) => {
+  if (!domain) return undefined;
+  const stripped = domain.replace(/^www\./, "").toLowerCase();
+  const matched = rules.find((rule) => rule.tokens.some((token) => stripped.includes(token)));
+  if (matched) return matched.key;
+  const root = stripped.split(".")[0]?.replace(/[^a-z0-9-]/g, "");
+  return root || undefined;
+};
+
+const normalizeProviderKey = (value?: string) => {
+  if (!value) return undefined;
+  const normalized = value.toLowerCase().trim().replace(/[^a-z0-9-]/g, "-");
+  return normalized.replace(/-+/g, "-");
+};
+
+export const providerByKey = (key?: string): ProviderInfo => {
+  const normalized = normalizeProviderKey(key);
+  if (!normalized) {
+    return {
+      key: "unknown",
+      name: "Unknown Provider",
+      logoPath: "/brand/unknown-provider.png",
+    };
+  }
+
+  const label =
+    customProviderNames[normalized] ?? titleCase(normalized.replace(/-/g, " "));
+
+  return {
+    key: normalized,
+    name: label,
+    logoPath: `/logos/providers/${normalized}.png`,
+  };
+};
+
 export const resolveBrand = (target: BrandTarget): BrandInfo => {
+  if (target.providerKey) {
+    const provider = providerByKey(target.providerKey);
+    return {
+      ...provider,
+      monogram: toMonogram(provider.name),
+    };
+  }
+
   const signature = signatureOf(target);
   const matched = rules.find((rule) =>
     rule.tokens.some((token) => signature.includes(token)),
   );
 
   if (matched) {
+    const provider = providerByKey(matched.key);
     return {
-      key: matched.key,
-      label: matched.label,
-      domain: matched.domain,
-      monogram: toMonogram(matched.label),
+      ...provider,
+      monogram: toMonogram(provider.name),
     };
   }
 
   const sourceDomain = parseDomain(target.sourceUrl);
   if (sourceDomain) {
-    const root = sourceDomain.split(".")[0]?.replace(/[-_]/g, " ") ?? "AI";
-    const label = titleCase(root);
+    const inferredKey = keyFromDomain(sourceDomain);
+    const provider = providerByKey(inferredKey);
     return {
-      key: root.replace(/\s+/g, "-"),
-      label,
+      ...provider,
+      monogram: toMonogram(provider.name),
       domain: sourceDomain,
-      monogram: toMonogram(label),
     };
   }
 
   const fallbackLabel = target.name?.trim() || "AI Model";
   return {
-    key: "ai",
-    label: fallbackLabel,
+    key: "unknown",
+    name: fallbackLabel,
+    logoPath: "/brand/unknown-provider.png",
     monogram: toMonogram(fallbackLabel),
   };
 };
 
-export const brandLogoCandidates = (brand: BrandInfo) => {
-  if (!brand.domain) return [];
-  return [
-    `https://logo.clearbit.com/${brand.domain}`,
-    `https://www.google.com/s2/favicons?sz=128&domain=${brand.domain}`,
-  ];
+export const providerFromListing = (
+  listing: Pick<Listing, "id" | "slug" | "name" | "tags" | "provenance" | "provider">,
+): ProviderInfo => {
+  if (listing.provider?.key) {
+    return providerByKey(listing.provider.key);
+  }
+
+  const resolved = resolveBrand({
+    id: listing.id,
+    slug: listing.slug,
+    name: listing.name,
+    source: listing.provenance.source,
+    sourceUrl: listing.provenance.sourceUrl,
+    tags: listing.tags,
+  });
+
+  return {
+    key: resolved.key,
+    name: resolved.name,
+    logoPath: resolved.logoPath,
+  };
 };

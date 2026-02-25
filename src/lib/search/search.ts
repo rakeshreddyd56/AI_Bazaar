@@ -1,6 +1,8 @@
-import { healthForListing } from "@/lib/health/score";
-import { resolveLocale } from "@/lib/i18n";
+import type { CategorySlug } from "@/lib/categories";
+import { providerFromListing } from "@/lib/branding";
+import { inferCategoryForListing, inferSecondaryCategories } from "@/lib/data/catalogue";
 import { listingById, publishedListings, reviewsSummary } from "@/lib/data/store";
+import { resolveLocale } from "@/lib/i18n";
 import { inferIntent } from "@/lib/search/intent";
 import { rankListings } from "@/lib/search/ranking";
 import type { ComparisonItem, SearchRequest, SearchResult } from "@/lib/types";
@@ -17,17 +19,21 @@ const isStale = (timestamp?: string) => {
 
 const normalizeRequest = (request: SearchRequest): Required<SearchRequest> => ({
   q: request.q.trim(),
-  persona: request.persona ?? "builder",
   locale: resolveLocale(request.locale),
   intent: request.intent ?? "text",
+  category: request.category ?? "all",
 });
 
 const toComparisonItem = (id: string): ComparisonItem | undefined => {
   const listing = listingById(id);
   if (!listing) return undefined;
 
-  const health = healthForListing(listing);
   const freshnessRef = listing.provenance.lastVerifiedAt ?? listing.updatedAt;
+  const categoryPrimary =
+    listing.categoryPrimary && listing.categoryPrimary !== "all"
+      ? listing.categoryPrimary
+      : inferCategoryForListing(listing);
+
   return {
     id: listing.id,
     slug: listing.slug,
@@ -37,11 +43,11 @@ const toComparisonItem = (id: string): ComparisonItem | undefined => {
     limitations: listing.limitations,
     pricingUsd: listing.pricingUsd,
     benchmarks: listing.benchmarks,
-    health: {
-      level: health.level,
-      score: health.score,
-      reasons: health.reasons,
-    },
+    provider: listing.provider ?? providerFromListing(listing),
+    categoryPrimary,
+    categorySecondary:
+      listing.categorySecondary ?? inferSecondaryCategories(categoryPrimary, listing),
+    riskFlag: listing.riskFlag,
     reviewsSummary: reviewsSummary(listing.id),
     updatedAt: listing.updatedAt,
     source: listing.provenance.source,
@@ -50,18 +56,20 @@ const toComparisonItem = (id: string): ComparisonItem | undefined => {
   };
 };
 
-const explanationForIntent = (intent: string, q: string) => {
+const explanationForIntent = (intent: string, q: string, category: CategorySlug) => {
+  const categoryHint = category === "all" ? "all categories" : `category: ${category}`;
+
   switch (intent) {
     case "video":
-      return `Prioritized video tools for \"${q}\" using duration, resolution, pricing, and reliability signals.`;
+      return `Prioritized video tools for "${q}" using duration, resolution, pricing, and reliability signals (${categoryHint}).`;
     case "image":
-      return `Prioritized image/SVG-capable tools for \"${q}\" with capability and editability signals.`;
+      return `Prioritized image/SVG-capable tools for "${q}" with capability and editability signals (${categoryHint}).`;
     case "code":
-      return `Prioritized coding tools/models for \"${q}\" using benchmark quality, cost, and setup friction.`;
+      return `Prioritized coding tools/models for "${q}" using benchmark quality, cost, setup friction, and category match (${categoryHint}).`;
     case "search":
-      return `Prioritized search and retrieval systems for \"${q}\" using freshness and citation-oriented signals.`;
+      return `Prioritized search and retrieval systems for "${q}" using freshness and citation-oriented signals (${categoryHint}).`;
     default:
-      return `Ranked results for \"${q}\" using capability-fit, benchmark quality, cost, recency, and health penalties.`;
+      return `Ranked results for "${q}" using capability fit, benchmark quality, cost, recency, category match, and reliability (${categoryHint}).`;
   }
 };
 
@@ -70,12 +78,22 @@ export const executeSearch = (request: SearchRequest): SearchResult => {
   const interpreted = inferIntent(normalized.q);
   const intent = normalized.intent !== "text" ? normalized.intent : interpreted.intent;
 
-  const scored = rankListings(publishedListings(), {
-    query: normalized.q,
+  const scopedListings =
+    normalized.category === "all"
+      ? publishedListings()
+      : publishedListings().filter(
+          (listing) =>
+            listing.categoryPrimary === normalized.category ||
+            listing.categorySecondary?.includes(normalized.category),
+        );
+
+  const searchPool = scopedListings.length ? scopedListings : publishedListings();
+
+  const scored = rankListings(searchPool, {
     intent,
     tokens: interpreted.tokens,
     capabilityFilters: interpreted.capabilityFilters,
-    persona: normalized.persona,
+    category: normalized.category,
   });
 
   const results = scored
@@ -89,7 +107,7 @@ export const executeSearch = (request: SearchRequest): SearchResult => {
       intent,
     },
     intent,
-    explanation: explanationForIntent(intent, normalized.q),
+    explanation: explanationForIntent(intent, normalized.q, normalized.category),
     confidence: Number(interpreted.confidence.toFixed(2)),
     results,
   };
@@ -101,10 +119,7 @@ export const compareListings = (ids: string[]) =>
     .filter((item): item is ComparisonItem => Boolean(item));
 
 export const comparisonTable = (items: ComparisonItem[]) => {
-  const topKeys = (
-    keyspace: "capabilities" | "benchmarks",
-    limit: number,
-  ) => {
+  const topKeys = (keyspace: "capabilities" | "benchmarks", limit: number) => {
     const count = new Map<string, number>();
 
     for (const item of items) {
@@ -129,12 +144,9 @@ export const comparisonTable = (items: ComparisonItem[]) => {
 
   const capabilityKeys = topKeys("capabilities", 8);
   const benchmarkKeys = topKeys("benchmarks", 6);
+  const anyRiskFlag = items.some((item) => Boolean(item.riskFlag));
 
   const rows = [
-    {
-      metric: "health.score",
-      values: items.map((item) => item.health.score),
-    },
     {
       metric: "reviewsSummary.rating",
       values: items.map((item) => item.reviewsSummary.rating || "-"),
@@ -155,6 +167,14 @@ export const comparisonTable = (items: ComparisonItem[]) => {
       metric: "freshness.stale",
       values: items.map((item) => item.stale),
     },
+    ...(anyRiskFlag
+      ? [
+          {
+            metric: "risk.flag",
+            values: items.map((item) => item.riskFlag?.level ?? "-"),
+          },
+        ]
+      : []),
     ...capabilityKeys.map((key) => ({
       metric: `capabilities.${key}`,
       values: items.map((item) => item.capabilities[key] ?? "-"),
@@ -170,6 +190,7 @@ export const comparisonTable = (items: ComparisonItem[]) => {
       id: item.id,
       slug: item.slug,
       name: item.name,
+      provider: item.provider,
     })),
     rows,
   };

@@ -1,14 +1,14 @@
-import { healthForListing } from "@/lib/health/score";
+import type { CategorySlug } from "@/lib/categories";
 import { reviewsSummary } from "@/lib/data/store";
-import type { Listing, Persona } from "@/lib/types";
+import { riskFlagForListing, riskSensitiveQuery } from "@/lib/risk/flags";
+import type { Intent, Listing } from "@/lib/types";
 import { clamp, tokenize } from "@/lib/utils";
 
 type RankingContext = {
-  query: string;
   intent: string;
   tokens: string[];
   capabilityFilters: Record<string, string | number | boolean>;
-  persona: Persona;
+  category: CategorySlug;
 };
 
 type ScoreBreakdown = {
@@ -20,48 +20,17 @@ type ScoreBreakdown = {
   costEfficiency: number;
   reliability: number;
   popularity: number;
-  healthPenalty: number;
+  categoryBoost: number;
+  riskAdjustment: number;
 };
 
-const personaWeights: Record<
-  Persona,
-  {
-    capabilityFit: number;
-    benchmarkQuality: number;
-    recency: number;
-    costEfficiency: number;
-    reliability: number;
-    popularity: number;
-    healthPenalty: number;
-  }
-> = {
-  builder: {
-    capabilityFit: 0.28,
-    benchmarkQuality: 0.14,
-    recency: 0.1,
-    costEfficiency: 0.17,
-    reliability: 0.15,
-    popularity: 0.09,
-    healthPenalty: 0.07,
-  },
-  business: {
-    capabilityFit: 0.16,
-    benchmarkQuality: 0.12,
-    recency: 0.07,
-    costEfficiency: 0.12,
-    reliability: 0.24,
-    popularity: 0.09,
-    healthPenalty: 0.2,
-  },
-  research: {
-    capabilityFit: 0.17,
-    benchmarkQuality: 0.3,
-    recency: 0.11,
-    costEfficiency: 0.08,
-    reliability: 0.15,
-    popularity: 0.07,
-    healthPenalty: 0.12,
-  },
+const weights = {
+  capabilityFit: 0.3,
+  benchmarkQuality: 0.2,
+  recency: 0.1,
+  costEfficiency: 0.13,
+  reliability: 0.17,
+  popularity: 0.1,
 };
 
 const capabilityScore = (listing: Listing, context: RankingContext) => {
@@ -71,10 +40,12 @@ const capabilityScore = (listing: Listing, context: RankingContext) => {
   const listingText = [listing.name, ...listing.tags, ...listing.limitations]
     .join(" ")
     .toLowerCase();
+  const nameText = listing.name.toLowerCase();
+  const matchedTokens = context.tokens.filter((token) => listingText.includes(token));
 
-  for (const token of context.tokens) {
-    if (listingText.includes(token)) score += 1.8;
-  }
+  score += matchedTokens.length * 1.8;
+  if (matchedTokens.length > 0 && matchedTokens.length === context.tokens.length) score += 18;
+  if (context.tokens.some((token) => nameText.includes(token))) score += 10;
 
   const wantsVoice = context.tokens.some((token) =>
     ["voice", "tts", "speech", "audio"].includes(token),
@@ -194,14 +165,17 @@ const costScore = (listing: Listing) => {
   return clamp(100 - perM * 2.8, 20, 95);
 };
 
-const reliabilityScore = (
-  listing: Listing,
-  health: ReturnType<typeof healthForListing>,
-) => {
+const reliabilityScore = (listing: Listing) => {
   const benchmark = benchmarkScore(listing);
-  const safety = health.dimensions.safety;
-  const compliance = health.dimensions.compliance;
-  return clamp(benchmark * 0.6 + (100 - safety) * 0.2 + (100 - compliance) * 0.2, 0, 100);
+  const safety = clamp(listing.risk.safetyScore * 100, 0, 100);
+  const compliance =
+    listing.compliance.commercialUse === "allowed"
+      ? 90
+      : listing.compliance.commercialUse === "restricted"
+        ? 58
+        : 45;
+
+  return clamp(benchmark * 0.55 + (100 - safety) * 0.25 + compliance * 0.2, 0, 100);
 };
 
 const popularityScore = (listing: Listing) => {
@@ -210,18 +184,33 @@ const popularityScore = (listing: Listing) => {
   return clamp(base + reviewBoost, 0, 100);
 };
 
-export const rankListings = (listings: Listing[], context: RankingContext) => {
-  const weights = personaWeights[context.persona];
+const categoryBoostScore = (listing: Listing, category: CategorySlug) => {
+  if (category === "all") return 0;
+  if (listing.categoryPrimary === category) return 14;
+  if (listing.categorySecondary?.includes(category)) return 8;
+  return -4;
+};
 
+const riskAdjustmentScore = (listing: Listing, context: RankingContext) => {
+  const flag = listing.riskFlag ?? riskFlagForListing(listing);
+  if (!flag) return 0;
+
+  const isSensitive = riskSensitiveQuery(context.intent as Intent, context.tokens);
+
+  if (!isSensitive) return 0;
+  return flag.level === "high" ? 12 : 6;
+};
+
+export const rankListings = (listings: Listing[], context: RankingContext) => {
   const scored: ScoreBreakdown[] = listings.map((listing) => {
-    const health = healthForListing(listing);
     const capabilityFit = capabilityScore(listing, context);
     const benchmarkQuality = benchmarkScore(listing);
     const recency = recencyScore(listing);
     const costEfficiency = costScore(listing);
-    const reliability = reliabilityScore(listing, health);
+    const reliability = reliabilityScore(listing);
     const popularity = popularityScore(listing);
-    const healthPenalty = health.score;
+    const categoryBoost = categoryBoostScore(listing, context.category);
+    const riskAdjustment = riskAdjustmentScore(listing, context);
 
     const score =
       capabilityFit * weights.capabilityFit +
@@ -229,8 +218,9 @@ export const rankListings = (listings: Listing[], context: RankingContext) => {
       recency * weights.recency +
       costEfficiency * weights.costEfficiency +
       reliability * weights.reliability +
-      popularity * weights.popularity -
-      healthPenalty * weights.healthPenalty;
+      popularity * weights.popularity +
+      categoryBoost -
+      riskAdjustment;
 
     return {
       id: listing.id,
@@ -241,7 +231,8 @@ export const rankListings = (listings: Listing[], context: RankingContext) => {
       costEfficiency,
       reliability,
       popularity,
-      healthPenalty,
+      categoryBoost,
+      riskAdjustment,
     };
   });
 

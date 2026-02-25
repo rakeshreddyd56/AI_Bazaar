@@ -2,13 +2,34 @@ import type { Intent } from "@/lib/types";
 import { tokenize } from "@/lib/utils";
 
 const intentKeywords: Record<Intent, string[]> = {
-  text: ["chat", "llm", "writing", "text", "reasoning", "qa"],
-  image: ["image", "img", "photo", "logo", "design", "poster", "svg", "icon"],
-  video: ["video", "reel", "clip", "text-to-video", "ads", "cinematic"],
-  audio: ["audio", "voice", "tts", "speech", "music", "dubbing"],
+  text: ["chat", "llm", "writing", "text", "reasoning", "qa", "foundation model"],
+  image: [
+    "image",
+    "img",
+    "photo",
+    "logo",
+    "design",
+    "poster",
+    "svg",
+    "icon",
+    "vector",
+    "illustration",
+  ],
+  video: [
+    "video",
+    "reel",
+    "clip",
+    "text-to-video",
+    "text to video",
+    "ads",
+    "cinematic",
+    "avatar",
+    "talking head",
+  ],
+  audio: ["audio", "voice", "tts", "speech", "music", "dubbing", "stt", "asr", "voice clone"],
   code: ["code", "coding", "developer", "repo", "bug", "swe"],
-  agent: ["agent", "autonomous", "tool-calling", "workflow"],
-  search: ["search", "retrieval", "rag", "web", "citations"],
+  agent: ["agent", "autonomous", "tool-calling", "workflow", "automation", "orchestration"],
+  search: ["search", "retrieval", "rag", "web", "citations", "rerank"],
 };
 
 export type IntentParseResult = {

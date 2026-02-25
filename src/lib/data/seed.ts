@@ -1,3 +1,10 @@
+import { providerFromListing } from "@/lib/branding";
+import {
+  generatedCatalogueListings,
+  inferCategoryForListing,
+  inferSecondaryCategories,
+} from "@/lib/data/catalogue";
+import { riskFlagForListing } from "@/lib/risk/flags";
 import type { Listing, Review } from "@/lib/types";
 
 const now = new Date();
@@ -3105,6 +3112,21 @@ export const seedListings: Listing[] = [
     updatedAt: isoDaysAgo(0),
   },
 ];
+
+const generatedListings = generatedCatalogueListings(seedListings);
+seedListings.push(...generatedListings);
+
+for (const listing of seedListings) {
+  const primary =
+    listing.categoryPrimary && listing.categoryPrimary !== "all"
+      ? listing.categoryPrimary
+      : inferCategoryForListing(listing);
+  listing.categoryPrimary = primary;
+  listing.categorySecondary =
+    listing.categorySecondary ?? inferSecondaryCategories(primary, listing);
+  listing.provider = providerFromListing(listing);
+  listing.riskFlag = listing.riskFlag ?? riskFlagForListing(listing);
+}
 
 export const seedReviews: Review[] = [
   {

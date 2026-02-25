@@ -1,11 +1,9 @@
 import Link from "next/link";
 import { BrandLogo } from "@/components/BrandLogo";
-import { resolveBrand } from "@/lib/branding";
 import type { ComparisonItem } from "@/lib/types";
 
-const levelColor = {
-  low: "bg-emerald-100 text-emerald-800",
-  medium: "bg-amber-100 text-amber-800",
+const riskColor = {
+  watchlist: "bg-amber-100 text-amber-800",
   high: "bg-rose-100 text-rose-800",
 } as const;
 
@@ -17,25 +15,28 @@ export function ResultCard({ item }: Props) {
   const freshnessLabel = item.stale
     ? "Stale data"
     : `Updated ${new Date(item.lastVerifiedAt ?? item.updatedAt).toLocaleDateString("en-IN")}`;
-  const brandTarget = {
-    id: item.id,
-    slug: item.slug,
-    name: item.name,
-    source: item.source,
-  };
-  const brand = resolveBrand(brandTarget);
 
   return (
     <article className="rounded-3xl border border-neutral-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg">
       <div className="mb-3 flex items-start justify-between gap-2">
         <div className="flex items-start gap-3">
-          <BrandLogo target={brandTarget} size="md" />
+          <BrandLogo
+            target={{
+              id: item.id,
+              slug: item.slug,
+              name: item.name,
+              source: item.source,
+              providerKey: item.provider.key,
+            }}
+            size="md"
+          />
           <div>
             <h3 className="text-lg font-semibold text-neutral-900">{item.name}</h3>
             <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-neutral-500">
-              {brand.label}
+              {item.provider.name}
             </p>
             <p className="text-xs text-neutral-500">{item.modality.join(" • ")}</p>
+            <p className="text-[11px] text-neutral-500">Category: {item.categoryPrimary}</p>
             <p
               className={`mt-1 text-[11px] ${
                 item.stale ? "text-rose-600" : "text-emerald-600"
@@ -45,11 +46,13 @@ export function ResultCard({ item }: Props) {
             </p>
           </div>
         </div>
-        <span
-          className={`rounded-full px-2.5 py-1 text-xs font-semibold ${levelColor[item.health.level]}`}
-        >
-          Health: {item.health.level}
-        </span>
+        {item.riskFlag ? (
+          <span
+            className={`rounded-full px-2.5 py-1 text-xs font-semibold ${riskColor[item.riskFlag.level]}`}
+          >
+            Risk: {item.riskFlag.level}
+          </span>
+        ) : null}
       </div>
 
       <div className="grid grid-cols-2 gap-2 text-xs text-neutral-700">

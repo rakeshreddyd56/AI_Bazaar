@@ -1,6 +1,7 @@
-import { healthForListing } from "@/lib/health/score";
+import { providerFromListing } from "@/lib/branding";
 import { listingBySlug, listingReviews, reviewsSummary } from "@/lib/data/store";
 import { resolveLocale } from "@/lib/i18n";
+import { riskFlagForListing } from "@/lib/risk/flags";
 
 const isStale = (timestamp?: string) => {
   if (!timestamp) return true;
@@ -14,21 +15,16 @@ export const listingDetail = (slug: string, locale?: string) => {
   if (!listing) return undefined;
 
   const preferredLocale = resolveLocale(locale);
-  const health = healthForListing(listing);
   const freshnessRef = listing.provenance.lastVerifiedAt ?? listing.updatedAt;
 
   return {
     ...listing,
+    provider: listing.provider ?? providerFromListing(listing),
+    riskFlag: listing.riskFlag ?? riskFlagForListing(listing),
     summaryText: listing.summary[preferredLocale],
     quickstartText: listing.quickstart.map((step) => step[preferredLocale]),
     bestForText: listing.bestFor.map((step) => step[preferredLocale]),
     avoidWhenText: listing.avoidWhen.map((step) => step[preferredLocale]),
-    health: {
-      level: health.level,
-      score: health.score,
-      reasons: health.reasons,
-      dimensions: health.dimensions,
-    },
     stale: isStale(freshnessRef),
     reviews: listingReviews(listing.id),
     reviewsSummary: reviewsSummary(listing.id),

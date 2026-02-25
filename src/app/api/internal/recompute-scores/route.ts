@@ -1,14 +1,14 @@
 import { NextResponse } from "next/server";
 import { allListings, reviewsSummary } from "@/lib/data/store";
-import { healthForListing } from "@/lib/health/score";
 import { logEvent } from "@/lib/observability/events";
+import { riskFlagForListing } from "@/lib/risk/flags";
 
 export async function POST() {
   const listings = allListings();
 
   const rows = listings.map((listing) => ({
     id: listing.id,
-    health: healthForListing(listing),
+    riskFlag: listing.riskFlag ?? riskFlagForListing(listing),
     reviewsSummary: reviewsSummary(listing.id),
   }));
 

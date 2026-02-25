@@ -74,6 +74,7 @@ export function CompareMatrix({ items, title }: Props) {
 
   const capabilityKeys = topKeys(items, "capabilities", 8);
   const benchmarkKeys = topKeys(items, "benchmarks", 6);
+  const hasRisk = items.some((item) => Boolean(item.riskFlag));
 
   return (
     <aside className="sticky top-4 rounded-3xl border border-neutral-200 bg-white p-4 shadow-sm">
@@ -92,26 +93,22 @@ export function CompareMatrix({ items, title }: Props) {
                         slug: item.slug,
                         name: item.name,
                         source: item.source,
+                        providerKey: item.provider.key,
                       }}
                       size="sm"
                     />
-                    <span className="max-w-[180px] break-words leading-snug">
-                      {item.name}
-                    </span>
+                    <div>
+                      <span className="max-w-[180px] break-words leading-snug">{item.name}</span>
+                      <p className="text-[10px] uppercase tracking-[0.08em] text-neutral-500">
+                        {item.provider.name}
+                      </p>
+                    </div>
                   </div>
                 </th>
               ))}
             </tr>
           </thead>
           <tbody>
-            <tr className="border-b border-neutral-100">
-              <td className="py-2 pr-4 text-neutral-500">Health score</td>
-              {items.map((item) => (
-                <td key={`${item.id}-health`} className="py-2 pr-4 font-medium text-neutral-800">
-                  {formatValue(item.health.score)}
-                </td>
-              ))}
-            </tr>
             <tr className="border-b border-neutral-100">
               <td className="py-2 pr-4 text-neutral-500">Avg rating</td>
               {items.map((item) => (
@@ -144,6 +141,16 @@ export function CompareMatrix({ items, title }: Props) {
                 </td>
               ))}
             </tr>
+            {hasRisk ? (
+              <tr className="border-b border-neutral-100">
+                <td className="py-2 pr-4 text-neutral-500">Risk flag</td>
+                {items.map((item) => (
+                  <td key={`${item.id}-risk`} className="py-2 pr-4 text-neutral-700">
+                    {item.riskFlag ? `Risk: ${item.riskFlag.level}` : "-"}
+                  </td>
+                ))}
+              </tr>
+            ) : null}
             <tr className="border-b border-neutral-100">
               <td className="py-2 pr-4 text-neutral-500">Freshness</td>
               {items.map((item) => (

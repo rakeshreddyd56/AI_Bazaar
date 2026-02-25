@@ -1,11 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import {
-  brandLogoCandidates,
-  resolveBrand,
-  type BrandTarget,
-} from "@/lib/branding";
+import { useState } from "react";
+import { resolveBrand, type BrandTarget } from "@/lib/branding";
 
 type Props = {
   target: BrandTarget;
@@ -34,51 +30,31 @@ const toneFor = (key: string) => {
 };
 
 export function BrandLogo({ target, size = "md", className = "" }: Props) {
-  const signature = [
-    target.id,
-    target.slug,
-    target.name,
-    target.source,
-    target.sourceUrl,
-    (target.tags ?? []).join("|"),
-  ].join("|");
-
   const brand = resolveBrand(target);
-  const candidates = brandLogoCandidates(brand);
-  const [candidateIndex, setCandidateIndex] = useState(0);
-
-  useEffect(() => {
-    setCandidateIndex(0);
-  }, [signature]);
-
-  const src =
-    candidateIndex >= 0 && candidateIndex < candidates.length
-      ? candidates[candidateIndex]
-      : undefined;
+  const [failed, setFailed] = useState(false);
 
   return (
     <span
       className={`relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-xl border border-black/10 bg-gradient-to-br ${toneFor(
         brand.key,
       )} ${sizeClass[size]} ${className}`}
-      title={`${brand.label} logo`}
-      aria-label={`${brand.label} logo`}
+      title={`${brand.name} logo`}
+      aria-label={`${brand.name} logo`}
     >
       <span className="absolute inset-0 bg-white/75" />
+      {!failed ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={brand.logoPath}
+          alt={`${brand.name} logo`}
+          className="absolute inset-0 z-[2] h-full w-full bg-white p-1 object-contain"
+          loading="lazy"
+          onError={() => setFailed(true)}
+        />
+      ) : null}
       <span className="relative z-[1] font-semibold tracking-tight text-neutral-800">
         {brand.monogram}
       </span>
-      {src ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={src}
-          alt={`${brand.label} logo`}
-          className="absolute inset-0 z-[2] h-full w-full bg-white p-1 object-contain"
-          loading="lazy"
-          referrerPolicy="no-referrer"
-          onError={() => setCandidateIndex((current) => current + 1)}
-        />
-      ) : null}
     </span>
   );
 }

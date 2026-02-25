@@ -1,17 +1,12 @@
 import Link from "next/link";
+import { CategorySidebar } from "@/components/CategorySidebar";
 import { CompareMatrix } from "@/components/CompareMatrix";
 import { LocaleSwitch } from "@/components/LocaleSwitch";
-import { PersonaTabs } from "@/components/PersonaTabs";
 import { ResultCard } from "@/components/ResultCard";
 import { SearchCommand } from "@/components/SearchCommand";
+import { isCategorySlug } from "@/lib/categories";
 import { executeSearch } from "@/lib/search/search";
 import { dictionaryFor, resolveLocale } from "@/lib/i18n";
-import type { Persona } from "@/lib/types";
-
-const personaFromValue = (value?: string): Persona => {
-  if (value === "business" || value === "research") return value;
-  return "builder";
-};
 
 export default async function ResultsPage({
   searchParams,
@@ -24,9 +19,8 @@ export default async function ResultsPage({
   const locale = resolveLocale(
     Array.isArray(params.locale) ? params.locale[0] : params.locale,
   );
-  const persona = personaFromValue(
-    Array.isArray(params.persona) ? params.persona[0] : params.persona,
-  );
+  const categoryParam = Array.isArray(params.category) ? params.category[0] : params.category;
+  const category = isCategorySlug(categoryParam) ? categoryParam : "all";
 
   const dict = dictionaryFor(locale);
 
@@ -41,7 +35,7 @@ export default async function ResultsPage({
     );
   }
 
-  const result = executeSearch({ q, persona, locale });
+  const result = executeSearch({ q, category, locale });
   const compareItems = result.results.slice(0, 3);
 
   return (
@@ -60,28 +54,18 @@ export default async function ResultsPage({
           </div>
         </header>
 
-        <div className="mb-5">
-          <PersonaTabs
-            value={persona}
-            variant="light"
-            labels={{
-              builder: dict.builder,
-              business: dict.business,
-              research: dict.research,
-            }}
-          />
-        </div>
-
         <div className="mb-6">
           <SearchCommand
             defaultQuery={q}
             locale={locale}
-            persona={persona}
+            category={category}
             placeholder={dict.searchPlaceholder}
           />
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
+        <div className="grid gap-6 lg:grid-cols-[260px_minmax(0,1fr)_360px]">
+          <CategorySidebar locale={locale} selected={category} />
+
           <main>
             {result.results.length === 0 ? (
               <div className="rounded-3xl border border-neutral-200 bg-white p-6 text-sm text-neutral-600">
