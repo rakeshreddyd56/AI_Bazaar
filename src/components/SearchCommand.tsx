@@ -1,13 +1,21 @@
 import type { CategorySlug } from "@/lib/categories";
+import type { CurrencyCode } from "@/lib/currency";
 
 type Props = {
   defaultQuery?: string;
   placeholder: string;
   locale: "en-IN" | "hi-IN";
   category: CategorySlug;
+  currency: CurrencyCode;
 };
 
-export function SearchCommand({ defaultQuery, placeholder, locale, category }: Props) {
+export function SearchCommand({
+  defaultQuery,
+  placeholder,
+  locale,
+  category,
+  currency,
+}: Props) {
   return (
     <form
       action="/results"
@@ -15,6 +23,7 @@ export function SearchCommand({ defaultQuery, placeholder, locale, category }: P
     >
       <input type="hidden" name="locale" value={locale} />
       <input type="hidden" name="category" value={category} />
+      <input type="hidden" name="currency" value={currency} />
 
       <div className="flex flex-col gap-2 md:flex-row md:items-center">
         <div className="flex-1">

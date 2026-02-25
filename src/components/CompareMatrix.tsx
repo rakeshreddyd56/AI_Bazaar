@@ -1,9 +1,15 @@
 import { BrandLogo } from "@/components/BrandLogo";
+import {
+  currencySymbol,
+  formatCurrencyValue,
+  type CurrencyCode,
+} from "@/lib/currency";
 import type { ComparisonItem } from "@/lib/types";
 
 type Props = {
   items: ComparisonItem[];
   title: string;
+  currency: CurrencyCode;
 };
 
 const prioritize = [
@@ -69,7 +75,7 @@ const topKeys = (
     .map(([key]) => key);
 };
 
-export function CompareMatrix({ items, title }: Props) {
+export function CompareMatrix({ items, title, currency }: Props) {
   if (!items.length) return null;
 
   const capabilityKeys = topKeys(items, "capabilities", 8);
@@ -118,26 +124,33 @@ export function CompareMatrix({ items, title }: Props) {
               ))}
             </tr>
             <tr className="border-b border-neutral-100">
-              <td className="py-2 pr-4 text-neutral-500">Input price ($/1M)</td>
+              <td className="py-2 pr-4 text-neutral-500">
+                Input price ({currencySymbol(currency)}/1M)
+              </td>
               {items.map((item) => (
                 <td key={`${item.id}-input`} className="py-2 pr-4 text-neutral-700">
-                  {formatValue(item.pricingUsd?.inputPerM)}
+                  {formatCurrencyValue(item.pricingUsd?.inputPerM, currency)}
                 </td>
               ))}
             </tr>
             <tr className="border-b border-neutral-100">
-              <td className="py-2 pr-4 text-neutral-500">Output price ($/1M)</td>
+              <td className="py-2 pr-4 text-neutral-500">
+                Output price ({currencySymbol(currency)}/1M)
+              </td>
               {items.map((item) => (
                 <td key={`${item.id}-output`} className="py-2 pr-4 text-neutral-700">
-                  {formatValue(item.pricingUsd?.outputPerM)}
+                  {formatCurrencyValue(item.pricingUsd?.outputPerM, currency)}
                 </td>
               ))}
             </tr>
             <tr className="border-b border-neutral-100">
-              <td className="py-2 pr-4 text-neutral-500">Monthly price (USD)</td>
+              <td className="py-2 pr-4 text-neutral-500">Monthly price ({currency})</td>
               {items.map((item) => (
                 <td key={`${item.id}-monthly`} className="py-2 pr-4 text-neutral-700">
-                  {formatValue(item.pricingUsd?.monthly)}
+                  {formatCurrencyValue(item.pricingUsd?.monthly, currency, {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                  })}
                 </td>
               ))}
             </tr>

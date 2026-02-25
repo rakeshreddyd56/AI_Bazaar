@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { CategorySidebar } from "@/components/CategorySidebar";
+import { CurrencySwitch } from "@/components/CurrencySwitch";
 import { LocaleSwitch } from "@/components/LocaleSwitch";
 import { SearchCommand } from "@/components/SearchCommand";
 import { BrandLogo } from "@/components/BrandLogo";
 import { categoryDefinitions, isCategorySlug } from "@/lib/categories";
+import { resolveCurrency } from "@/lib/currency";
 import { publishedListings } from "@/lib/data/store";
 import { dictionaryFor, resolveLocale } from "@/lib/i18n";
 
@@ -24,6 +26,9 @@ export default async function Home({
   const params = await searchParams;
   const locale = resolveLocale(
     Array.isArray(params.locale) ? params.locale[0] : params.locale,
+  );
+  const currency = resolveCurrency(
+    Array.isArray(params.currency) ? params.currency[0] : params.currency,
   );
   const categoryParam = Array.isArray(params.category) ? params.category[0] : params.category;
   const category = isCategorySlug(categoryParam) ? categoryParam : "all";
@@ -58,11 +63,12 @@ export default async function Home({
           </div>
           <div className="flex items-center gap-3">
             <Link
-              href={`/moderation?${new URLSearchParams({ locale }).toString()}`}
+              href={`/moderation?${new URLSearchParams({ locale, currency }).toString()}`}
               className="rounded-full border border-white/20 bg-black/20 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-black/35"
             >
               Submit / Review
             </Link>
+            <CurrencySwitch currency={currency} />
             <LocaleSwitch locale={locale} />
           </div>
         </header>
@@ -80,6 +86,7 @@ export default async function Home({
               <SearchCommand
                 locale={locale}
                 category={category}
+                currency={currency}
                 placeholder={dict.searchPlaceholder}
               />
               <div className="mt-4 flex flex-wrap gap-2">
@@ -89,6 +96,7 @@ export default async function Home({
                     href={`/results?${new URLSearchParams({
                       q: query.q,
                       locale,
+                      currency,
                       category: query.category,
                     }).toString()}`}
                     className="rounded-full border border-white/20 bg-black/30 px-3 py-1.5 text-xs text-neutral-200 transition hover:border-white/50 hover:bg-black/50"
@@ -109,6 +117,7 @@ export default async function Home({
                       href={`/results?${new URLSearchParams({
                         q: `best ${entry.slug.replace(/-/g, " ")} tools`,
                         locale,
+                        currency,
                         category: entry.slug,
                       }).toString()}`}
                       className="rounded-xl bg-white/10 px-3 py-2 text-xs font-medium text-neutral-100 transition hover:bg-white/20"

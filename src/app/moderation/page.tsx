@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { CurrencySwitch } from "@/components/CurrencySwitch";
 import { LocaleSwitch } from "@/components/LocaleSwitch";
+import { resolveCurrency } from "@/lib/currency";
 import {
   addSubmission,
   listSubmissions,
@@ -82,6 +84,9 @@ export default async function ModerationPage({
   const locale = resolveLocale(
     Array.isArray(params.locale) ? params.locale[0] : params.locale,
   );
+  const currency = resolveCurrency(
+    Array.isArray(params.currency) ? params.currency[0] : params.currency,
+  );
 
   const submissions = listSubmissions().sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   const pending = submissions.filter((item) => item.status === "pending");
@@ -91,7 +96,10 @@ export default async function ModerationPage({
       <div className="mx-auto max-w-5xl px-5 py-8 md:px-8">
         <header className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <div>
-            <Link href={`/?locale=${locale}`} className="text-xs font-medium text-neutral-500 hover:underline">
+            <Link
+              href={`/?${new URLSearchParams({ locale, currency }).toString()}`}
+              className="text-xs font-medium text-neutral-500 hover:underline"
+            >
               ← AI Bazaar
             </Link>
             <h1 className="mt-1 text-2xl font-bold text-neutral-900">Submissions & Moderation</h1>
@@ -99,7 +107,10 @@ export default async function ModerationPage({
               Open submissions are queued as unverified. Only approved entries can be published.
             </p>
           </div>
-          <LocaleSwitch locale={locale} variant="light" />
+          <div className="flex items-center gap-3">
+            <CurrencySwitch currency={currency} variant="light" />
+            <LocaleSwitch locale={locale} variant="light" />
+          </div>
         </header>
 
         <section className="rounded-3xl border border-neutral-200 bg-white p-5 shadow-sm">

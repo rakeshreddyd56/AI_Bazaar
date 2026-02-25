@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { CategorySidebar } from "@/components/CategorySidebar";
 import { CompareMatrix } from "@/components/CompareMatrix";
+import { CurrencySwitch } from "@/components/CurrencySwitch";
 import { LocaleSwitch } from "@/components/LocaleSwitch";
 import { ResultCard } from "@/components/ResultCard";
 import { SearchCommand } from "@/components/SearchCommand";
 import { isCategorySlug } from "@/lib/categories";
+import { resolveCurrency } from "@/lib/currency";
 import { executeSearch } from "@/lib/search/search";
 import { dictionaryFor, resolveLocale } from "@/lib/i18n";
 
@@ -19,6 +21,9 @@ export default async function ResultsPage({
   const locale = resolveLocale(
     Array.isArray(params.locale) ? params.locale[0] : params.locale,
   );
+  const currency = resolveCurrency(
+    Array.isArray(params.currency) ? params.currency[0] : params.currency,
+  );
   const categoryParam = Array.isArray(params.category) ? params.category[0] : params.category;
   const category = isCategorySlug(categoryParam) ? categoryParam : "all";
 
@@ -28,7 +33,10 @@ export default async function ResultsPage({
     return (
       <div className="mx-auto max-w-4xl px-6 py-10">
         <p className="mb-4 text-sm text-neutral-600">Missing query. Start from home search.</p>
-        <Link href="/" className="text-sm font-semibold text-blue-600 hover:underline">
+        <Link
+          href={`/?${new URLSearchParams({ locale, currency }).toString()}`}
+          className="text-sm font-semibold text-blue-600 hover:underline"
+        >
           Back to AI Bazaar
         </Link>
       </div>
@@ -43,13 +51,17 @@ export default async function ResultsPage({
       <div className="mx-auto max-w-7xl px-5 py-6 md:px-8">
         <header className="mb-6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div>
-            <Link href="/" className="text-xs font-medium text-neutral-500 hover:underline">
+            <Link
+              href={`/?${new URLSearchParams({ locale, currency }).toString()}`}
+              className="text-xs font-medium text-neutral-500 hover:underline"
+            >
               ← AI Bazaar
             </Link>
             <h1 className="text-2xl font-bold text-neutral-900 md:text-3xl">Search Results</h1>
             <p className="text-sm text-neutral-600">{result.explanation}</p>
           </div>
           <div className="flex items-center gap-3">
+            <CurrencySwitch currency={currency} variant="light" />
             <LocaleSwitch locale={locale} variant="light" />
           </div>
         </header>
@@ -59,6 +71,7 @@ export default async function ResultsPage({
             defaultQuery={q}
             locale={locale}
             category={category}
+            currency={currency}
             placeholder={dict.searchPlaceholder}
           />
         </div>
@@ -74,13 +87,13 @@ export default async function ResultsPage({
             ) : (
               <div className="grid gap-4 md:grid-cols-2">
                 {result.results.map((item) => (
-                  <ResultCard key={item.id} item={item} />
+                  <ResultCard key={item.id} item={item} locale={locale} currency={currency} />
                 ))}
               </div>
             )}
           </main>
 
-          <CompareMatrix items={compareItems} title={dict.compareTitle} />
+          <CompareMatrix items={compareItems} title={dict.compareTitle} currency={currency} />
         </div>
       </div>
     </div>

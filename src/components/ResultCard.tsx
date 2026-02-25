@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { BrandLogo } from "@/components/BrandLogo";
+import type { CurrencyCode } from "@/lib/currency";
+import { pricingLineFromUsd } from "@/lib/currency";
 import type { ComparisonItem } from "@/lib/types";
 
 const riskColor = {
@@ -9,9 +11,11 @@ const riskColor = {
 
 type Props = {
   item: ComparisonItem;
+  locale: "en-IN" | "hi-IN";
+  currency: CurrencyCode;
 };
 
-export function ResultCard({ item }: Props) {
+export function ResultCard({ item, locale, currency }: Props) {
   const freshnessLabel = item.stale
     ? "Stale data"
     : `Updated ${new Date(item.lastVerifiedAt ?? item.updatedAt).toLocaleDateString("en-IN")}`;
@@ -78,15 +82,12 @@ export function ResultCard({ item }: Props) {
       </div>
 
       <div className="mt-4 flex items-center justify-between">
-        <div className="text-xs text-neutral-500">
-          {typeof item.pricingUsd?.monthly === "number"
-            ? `~$${item.pricingUsd.monthly}/mo`
-            : item.pricingUsd?.inputPerM || item.pricingUsd?.outputPerM
-              ? `$${item.pricingUsd.inputPerM ?? 0}/$${item.pricingUsd.outputPerM ?? 0} per 1M`
-              : "Pricing varies"}
-        </div>
+        <div className="text-xs text-neutral-500">{pricingLineFromUsd(item.pricingUsd, currency)}</div>
         <Link
-          href={`/listings/${item.slug}`}
+          href={`/listings/${item.slug}?${new URLSearchParams({
+            locale,
+            currency,
+          }).toString()}`}
           className="rounded-full border border-neutral-300 px-3 py-1.5 text-xs font-semibold text-neutral-700 transition hover:bg-neutral-900 hover:text-white"
         >
           View details

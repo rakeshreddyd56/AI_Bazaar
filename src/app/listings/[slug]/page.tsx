@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BrandLogo } from "@/components/BrandLogo";
+import { CurrencySwitch } from "@/components/CurrencySwitch";
 import { LocaleSwitch } from "@/components/LocaleSwitch";
+import { formatCurrencyValue, resolveCurrency } from "@/lib/currency";
 import { listingDetail } from "@/lib/data/listing-view";
 import { dictionaryFor, resolveLocale } from "@/lib/i18n";
 
@@ -22,6 +24,9 @@ export default async function ListingPage({
   const locale = resolveLocale(
     Array.isArray(query.locale) ? query.locale[0] : query.locale,
   );
+  const currency = resolveCurrency(
+    Array.isArray(query.currency) ? query.currency[0] : query.currency,
+  );
 
   const detail = listingDetail(slug, locale);
   if (!detail) notFound();
@@ -34,12 +39,19 @@ export default async function ListingPage({
       <div className="mx-auto max-w-5xl px-5 py-8 md:px-8">
         <header className="mb-3 flex items-center justify-between gap-3">
           <Link
-            href={`/results?locale=${locale}&category=${detail.categoryPrimary ?? "all"}`}
+            href={`/results?${new URLSearchParams({
+              locale,
+              currency,
+              category: detail.categoryPrimary ?? "all",
+            }).toString()}`}
             className="text-xs font-medium text-neutral-500 hover:underline"
           >
             ← Back to results
           </Link>
-          <LocaleSwitch locale={locale} variant="light" />
+          <div className="flex items-center gap-3">
+            <CurrencySwitch currency={currency} variant="light" />
+            <LocaleSwitch locale={locale} variant="light" />
+          </div>
         </header>
 
         <div className="mt-3 rounded-3xl border border-neutral-200 bg-white p-6 shadow-sm">
@@ -146,6 +158,21 @@ export default async function ListingPage({
                 <li>• Validate model behavior on your own benchmark slices before rollout.</li>
                 <li>• Pin version/provider routes for reproducible outputs.</li>
                 <li>• Add logging + fallback routes for high-volume workloads.</li>
+              </ul>
+              <h3 className="mt-4 text-xs font-semibold text-neutral-900">Pricing ({currency})</h3>
+              <ul className="mt-1 space-y-1 text-xs text-neutral-700">
+                <li>
+                  • Input / 1M: {formatCurrencyValue(detail.pricingUsd?.inputPerM, currency)}
+                </li>
+                <li>
+                  • Output / 1M: {formatCurrencyValue(detail.pricingUsd?.outputPerM, currency)}
+                </li>
+                <li>
+                  • Monthly: {formatCurrencyValue(detail.pricingUsd?.monthly, currency, {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                  })}
+                </li>
               </ul>
             </section>
           </div>
