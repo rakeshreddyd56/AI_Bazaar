@@ -1,3 +1,4 @@
+import { BrandLogo } from "@/components/BrandLogo";
 import type { ComparisonItem } from "@/lib/types";
 
 type Props = {
@@ -78,13 +79,26 @@ export function CompareMatrix({ items, title }: Props) {
     <aside className="sticky top-4 rounded-3xl border border-neutral-200 bg-white p-4 shadow-sm">
       <h2 className="mb-3 text-sm font-semibold text-neutral-900">{title}</h2>
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[380px] text-left text-xs">
+        <table className="w-full min-w-[440px] text-left text-xs">
           <thead>
             <tr className="border-b border-neutral-200 text-neutral-500">
               <th className="pb-2 pr-4">Metric</th>
               {items.map((item) => (
                 <th key={item.id} className="pb-2 pr-4 font-medium text-neutral-700">
-                  {item.name}
+                  <div className="flex min-w-[145px] items-center gap-2">
+                    <BrandLogo
+                      target={{
+                        id: item.id,
+                        slug: item.slug,
+                        name: item.name,
+                        source: item.source,
+                      }}
+                      size="sm"
+                    />
+                    <span className="max-w-[180px] break-words leading-snug">
+                      {item.name}
+                    </span>
+                  </div>
                 </th>
               ))}
             </tr>

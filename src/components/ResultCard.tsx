@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { SignalGlyph } from "@/components/SignalGlyph";
+import { BrandLogo } from "@/components/BrandLogo";
+import { resolveBrand } from "@/lib/branding";
 import type { ComparisonItem } from "@/lib/types";
 
 const levelColor = {
@@ -16,14 +17,24 @@ export function ResultCard({ item }: Props) {
   const freshnessLabel = item.stale
     ? "Stale data"
     : `Updated ${new Date(item.lastVerifiedAt ?? item.updatedAt).toLocaleDateString("en-IN")}`;
+  const brandTarget = {
+    id: item.id,
+    slug: item.slug,
+    name: item.name,
+    source: item.source,
+  };
+  const brand = resolveBrand(brandTarget);
 
   return (
     <article className="rounded-3xl border border-neutral-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg">
       <div className="mb-3 flex items-start justify-between gap-2">
         <div className="flex items-start gap-3">
-          <SignalGlyph seed={item.id} />
+          <BrandLogo target={brandTarget} size="md" />
           <div>
             <h3 className="text-lg font-semibold text-neutral-900">{item.name}</h3>
+            <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-neutral-500">
+              {brand.label}
+            </p>
             <p className="text-xs text-neutral-500">{item.modality.join(" • ")}</p>
             <p
               className={`mt-1 text-[11px] ${

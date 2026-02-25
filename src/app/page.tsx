@@ -5,6 +5,7 @@ import type { Persona } from "@/lib/types";
 import { LocaleSwitch } from "@/components/LocaleSwitch";
 import { PersonaTabs } from "@/components/PersonaTabs";
 import { SearchCommand } from "@/components/SearchCommand";
+import { BrandLogo } from "@/components/BrandLogo";
 
 const trendingQueries = [
   "best video gen tools for ads",
@@ -119,9 +120,24 @@ export default async function Home({
             <ul className="space-y-2 text-sm text-neutral-200">
               {recent.map((listing) => (
                 <li key={listing.id} className="rounded-xl bg-black/25 px-3 py-2">
-                  <div className="font-medium text-neutral-100">{listing.name}</div>
-                  <div className="text-xs text-neutral-300">
-                    Updated {new Date(listing.updatedAt).toLocaleDateString("en-IN")}
+                  <div className="flex items-start gap-2">
+                    <BrandLogo
+                      target={{
+                        id: listing.id,
+                        slug: listing.slug,
+                        name: listing.name,
+                        source: listing.provenance.source,
+                        sourceUrl: listing.provenance.sourceUrl,
+                        tags: listing.tags,
+                      }}
+                      size="sm"
+                    />
+                    <div>
+                      <div className="font-medium text-neutral-100">{listing.name}</div>
+                      <div className="text-xs text-neutral-300">
+                        Updated {new Date(listing.updatedAt).toLocaleDateString("en-IN")}
+                      </div>
+                    </div>
                   </div>
                 </li>
               ))}
