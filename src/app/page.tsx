@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Suspense } from "react";
+import { AppModeSwitch } from "@/components/AppModeSwitch";
 import { CategorySidebar } from "@/components/CategorySidebar";
 import { CurrencySwitch } from "@/components/CurrencySwitch";
 import { LocaleSwitch } from "@/components/LocaleSwitch";
@@ -68,6 +70,9 @@ export default async function Home({
             >
               Submit / Review
             </Link>
+            <Suspense fallback={<div className="hidden md:block" />}>
+              <AppModeSwitch mode="marketplace" />
+            </Suspense>
             <CurrencySwitch currency={currency} />
             <LocaleSwitch locale={locale} />
           </div>

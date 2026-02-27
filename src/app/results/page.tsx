@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Suspense } from "react";
+import { AppModeSwitch } from "@/components/AppModeSwitch";
 import { CategorySidebar } from "@/components/CategorySidebar";
 import { CompareMatrix } from "@/components/CompareMatrix";
 import { CurrencySwitch } from "@/components/CurrencySwitch";
@@ -61,6 +63,9 @@ export default async function ResultsPage({
             <p className="text-sm text-neutral-600">{result.explanation}</p>
           </div>
           <div className="flex items-center gap-3">
+            <Suspense fallback={<div className="hidden md:block" />}>
+              <AppModeSwitch mode="marketplace" variant="light" />
+            </Suspense>
             <CurrencySwitch currency={currency} variant="light" />
             <LocaleSwitch locale={locale} variant="light" />
           </div>

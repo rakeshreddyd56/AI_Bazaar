@@ -1,4 +1,5 @@
 import { providerFromListing } from "@/lib/branding";
+import { modelById } from "@/lib/console/models";
 import { listingBySlug, listingReviews, reviewsSummary } from "@/lib/data/store";
 import { resolveLocale } from "@/lib/i18n";
 import { riskFlagForListing } from "@/lib/risk/flags";
@@ -28,5 +29,6 @@ export const listingDetail = (slug: string, locale?: string) => {
     stale: isStale(freshnessRef),
     reviews: listingReviews(listing.id),
     reviewsSummary: reviewsSummary(listing.id),
+    consoleModelId: modelById(listing.id)?.modelId,
   };
 };

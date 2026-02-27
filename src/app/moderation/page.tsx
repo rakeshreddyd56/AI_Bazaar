@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { revalidatePath } from "next/cache";
+import { Suspense } from "react";
 import { z } from "zod";
+import { AppModeSwitch } from "@/components/AppModeSwitch";
 import { CurrencySwitch } from "@/components/CurrencySwitch";
 import { LocaleSwitch } from "@/components/LocaleSwitch";
 import { resolveCurrency } from "@/lib/currency";
@@ -108,6 +110,9 @@ export default async function ModerationPage({
             </p>
           </div>
           <div className="flex items-center gap-3">
+            <Suspense fallback={<div className="hidden md:block" />}>
+              <AppModeSwitch mode="marketplace" variant="light" />
+            </Suspense>
             <CurrencySwitch currency={currency} variant="light" />
             <LocaleSwitch locale={locale} variant="light" />
           </div>

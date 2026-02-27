@@ -11,6 +11,15 @@ export type Intent =
 
 export type RiskLevel = "watchlist" | "high";
 export type HealthLevel = "low" | "medium" | "high";
+export type RuntimeState = "warm" | "loading" | "cold";
+export type CapabilityKey =
+  | "tools"
+  | "vision"
+  | "json_mode"
+  | "streaming"
+  | "completion";
+export type ConsoleMode = "marketplace" | "console";
+export type OrganizationRole = "owner" | "admin" | "member";
 
 export type LocalizedString = {
   "en-IN": string;
@@ -21,6 +30,54 @@ export interface ProviderInfo {
   key: string;
   name: string;
   logoPath: string;
+}
+
+export interface ModelRuntimeMeta {
+  modelId: string;
+  family: string;
+  provider: string;
+  contextLength: number;
+  maxOutputTokens: number;
+  runtimeState: RuntimeState;
+  supports: Record<CapabilityKey, boolean>;
+  pricingUsd?: { inputPerM?: number; outputPerM?: number };
+}
+
+export interface ApiKeyRecord {
+  id: string;
+  orgId: string;
+  label: string;
+  prefix: string;
+  status: "active" | "revoked";
+  scopes: string[];
+  createdAt: string;
+  lastUsedAt?: string;
+}
+
+export interface UsageSummary {
+  orgId: string;
+  day: string;
+  requests: number;
+  inputTokens: number;
+  outputTokens: number;
+  quotaRemaining: {
+    requests: number;
+    inputTokens: number;
+    outputTokens: number;
+  };
+}
+
+export interface Organization {
+  id: string;
+  name: string;
+  createdAt: string;
+}
+
+export interface OrganizationMember {
+  orgId: string;
+  userId: string;
+  role: OrganizationRole;
+  createdAt: string;
 }
 
 export interface RiskFlag {

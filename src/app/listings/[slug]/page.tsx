@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
+import { AppModeSwitch } from "@/components/AppModeSwitch";
 import { BrandLogo } from "@/components/BrandLogo";
 import { CurrencySwitch } from "@/components/CurrencySwitch";
 import { LocaleSwitch } from "@/components/LocaleSwitch";
@@ -49,6 +51,9 @@ export default async function ListingPage({
             ← Back to results
           </Link>
           <div className="flex items-center gap-3">
+            <Suspense fallback={<div className="hidden md:block" />}>
+              <AppModeSwitch mode="marketplace" variant="light" />
+            </Suspense>
             <CurrencySwitch currency={currency} variant="light" />
             <LocaleSwitch locale={locale} variant="light" />
           </div>
@@ -94,6 +99,14 @@ export default async function ListingPage({
                   <span className="rounded-full border border-neutral-300 px-2 py-0.5 text-neutral-700">
                     Source: {detail.provenance.source}
                   </span>
+                  {detail.consoleModelId ? (
+                    <Link
+                      href={`/console/models?model=${detail.consoleModelId}`}
+                      className="rounded-full border border-neutral-300 px-2 py-0.5 text-neutral-700 underline"
+                    >
+                      Open in Console
+                    </Link>
+                  ) : null}
                 </div>
               </div>
             </div>

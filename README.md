@@ -1,22 +1,26 @@
 # AI Bazaar
 
-AI Bazaar is an India-first AI discovery marketplace for the latest models and tools.
+AI Bazaar is an India-first AI marketplace and inference platform.
 
-V1 focuses on:
-- Natural-language discovery (`best video gen tools`, `best SVG generation tools/models`)
-- Granular side-by-side comparisons (capability, pricing, benchmarks, limits)
-- Health meter for setup/safety/compliance risk
-- Open submissions + editorial moderation queue
-- Bilingual interface (`en-IN`, `hi-IN`)
+## What ships in v1.5
+
+- Marketplace mode (discovery, compare, category browsing, risk flags, moderation)
+- Console mode (Models, Playground, API Keys, Usage, Docs, Status)
+- OpenAI-compatible API surface:
+  - `GET /api/v1/models`
+  - `POST /api/v1/chat/completions`
+  - `POST /api/v1/completions`
+  - `POST /api/v1/tokenize`
+- Broker-first hybrid routing abstraction (external providers first, self-hosted fallback path)
+- Free-tier quota and queue enforcement with zero-retention request logging defaults
+- User/org API key controls (in-memory runtime for local dev)
 
 ## Stack
 
-- Frontend: Next.js 15 (App Router), TypeScript, Tailwind CSS v4
-- API layer: Next.js Route Handlers
-- Data (v1 local runtime): in-memory store seeded with curated listings
-- Schema target (production): Neon Postgres + `pgvector` in [db/schema.sql](/Users/rakeshreddy/Downloads/AI-Bazaar/db/schema.sql)
-- Queue/cache target (production): Upstash Redis + QStash
-- Observability hooks: structured logs (`src/lib/observability/events.ts`)
+- Frontend/API: Next.js 15 App Router + TypeScript + Tailwind v4
+- Runtime store in this repo: in-memory global state for fast iteration
+- Production schema blueprint: `db/schema.sql`
+- Tests: Vitest
 
 ## Quickstart
 
@@ -27,7 +31,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-### Quality checks
+## Quality checks
 
 ```bash
 npm run lint
@@ -35,75 +39,67 @@ npm run test
 npm run build
 ```
 
-## Environment Variables
-
-Create `.env.local` as needed:
+## Env vars
 
 ```bash
-# Optional: canonical/public app URL for metadata and sharing links
 NEXT_PUBLIC_SITE_URL=https://theaibazaar.com
-
-# Optional: enables Artificial Analysis ingest endpoint
 ARTIFICIAL_ANALYSIS_API_KEY=
-
-# Optional: protects internal moderation API in production
 ADMIN_REVIEW_TOKEN=
+API_KEY_HASH_SALT=
 ```
 
-## Core URLs
+## Key URLs
 
-- Home: `/`
-- Results: `/results?q=best+video+gen+tools`
-- Listing detail: `/listings/[slug]`
-- Submission + moderation UI: `/moderation`
+- Marketplace: `/`
+- Search results: `/results?q=best+video+gen+tools`
+- Listing details: `/listings/[slug]`
+- Moderation: `/moderation`
+- Console models: `/console/models`
+- Console playground: `/console/playground`
 
-## API Endpoints (V1)
+## API references
 
-- `GET /api/search?q=...&persona=builder|business|research&locale=en-IN|hi-IN&intent=...`
-- `GET /api/compare?ids=id1,id2,...`
-- `GET /api/listings/:slug?locale=en-IN|hi-IN`
+### Marketplace APIs
+
+- `GET /api/search`
+- `GET /api/compare`
+- `GET /api/listings/:slug`
 - `POST /api/submissions`
-- `POST /api/reviews` (requires `x-user-id` header)
-- `POST /api/internal/ingest/:source?apply=true&verify=true`
+- `POST /api/reviews`
+- `POST /api/internal/ingest/:source`
 - `POST /api/internal/recompute-scores`
 - `GET/PATCH /api/internal/moderation/submissions`
 
-## Data Source Mapping
+### Console APIs
 
-Connectors implemented in `src/lib/ingest/*`:
-- OpenRouter models API
-- Hugging Face trending API
-- SWE-bench leaderboard extraction
-- LiveBench datasets-server ingestion
-- Artificial Analysis ingestion (API key gated)
-- Arena/HELM secondary placeholders (manual/low frequency)
+- `GET /api/console/models`
+- `GET /api/console/models/:id`
+- `GET /api/console/usage`
+- `GET /api/console/keys`
+- `POST /api/console/keys`
+- `DELETE /api/console/keys/:id`
+- `GET /api/console/status`
 
-## Ranking + Health Logic
+### OpenAI-compatible Inference APIs
 
-Search ranking blends:
-- Capability fit
-- Benchmark quality
-- Recency
-- Cost efficiency
-- Reliability
-- Popularity
-- Health penalty
+- `GET /api/v1/models`
+- `POST /api/v1/chat/completions`
+- `POST /api/v1/completions`
+- `POST /api/v1/tokenize`
 
-Health meter dimensions:
-- Setup complexity
-- Safety/misuse risk
-- License/compliance risk
+## Local demo key
 
-All health scoring is deterministic for a fixed listing payload.
+For local development only (non-production), a seeded demo key exists:
 
-## Moderation Flow
+- `aibz_demo_local_key`
 
-- New submissions are always created as `pending`
-- Public search only includes `published + verified` listings
-- Editorial queue in `/moderation` can approve/reject submissions
-- Internal ingest imports are unverified by default unless explicitly marked `verify=true`
+Use as header:
+
+```bash
+Authorization: Bearer aibz_demo_local_key
+```
 
 ## Notes
 
-- Current v1 runtime store is intentionally in-memory for rapid iteration.
-- `db/schema.sql` is the production persistence blueprint for Neon/Postgres.
+- This repo intentionally uses an in-memory operational store for rapid iteration.
+- `db/schema.sql` includes both marketplace tables and v1.5 console/inference tables for production migration planning.
