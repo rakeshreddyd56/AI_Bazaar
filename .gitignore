@@ -40,3 +40,13 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .env*.local
+
+# Claude Code
+.claude/local.md
+coordination/active-agents.json
+ralph.log
+.worktrees/
+.dashboard/
+
+# OS
+Thumbs.db

@@ -1,0 +1,29 @@
+{
+  "notifications": {
+    "verbosity": "session",
+    "telegram": {
+      "botToken": "YOUR_BOT_TOKEN",
+      "chatId": "YOUR_CHAT_ID"
+    },
+    "discord": {
+      "webhookUrl": "https://discord.com/api/webhooks/YOUR_WEBHOOK_URL",
+      "mention": "<@YOUR_USER_ID>"
+    },
+    "slack": {
+      "webhookUrl": "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK"
+    },
+    "events": {
+      "session-end": {
+        "telegram": true,
+        "discord": true,
+        "slack": true
+      },
+      "ask-user-question": {
+        "telegram": true
+      },
+      "session-start": {
+        "discord": true
+      }
+    }
+  }
+}

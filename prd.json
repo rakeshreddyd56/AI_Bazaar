@@ -1,0 +1,29 @@
+[
+  {
+    "id": "TASK-001",
+    "title": "[Task title matching TASKS.md]",
+    "userStory": "US-001",
+    "priority": "P0",
+    "acceptanceCriteria": [
+      "Criterion 1",
+      "Criterion 2",
+      "All tests pass",
+      "No lint errors"
+    ],
+    "filesToModify": [],
+    "dependsOn": [],
+    "passes": false,
+    "notes": ""
+  },
+  {
+    "id": "TASK-002",
+    "title": "[Task title matching TASKS.md]",
+    "userStory": "US-001",
+    "priority": "P0",
+    "acceptanceCriteria": [],
+    "filesToModify": [],
+    "dependsOn": ["TASK-001"],
+    "passes": false,
+    "notes": ""
+  }
+]
